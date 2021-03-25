@@ -54,7 +54,7 @@ public class PromptGetter {
     
     public String getPrompt(){
        
-        return this.stringToReturn;
+        return "wwwwwwwwwwww wwwwwwwwwwwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwww wwwwwwwwww";
     }
     
     

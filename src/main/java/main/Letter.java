@@ -28,5 +28,9 @@ public class Letter {
     public Letter(){}
     
     public char getLetter(){return this.letter;}
+
+    public boolean isIsCorrect() {
+        return isCorrect;
+    }
     
 }
