@@ -23,6 +23,7 @@ public class TypeSomethingVinillaRace {
     private StringBuilder incorrectLetters;
     
     private int currentLetter;
+    private int currentWrong;
 
     public TypeSomethingVinillaRace(String prompt) {
         letterList = new ArrayList<Letter>();
@@ -30,6 +31,10 @@ public class TypeSomethingVinillaRace {
         createLetterList(this.prompt);
         promptFinished = false;
         isWrong = false;
+        
+        currentWrong = 0;
+        currentLetter = 0;
+        
         normalLetters = new StringBuilder();
         correctLetters = new StringBuilder();
         incorrectLetters = new StringBuilder();
@@ -61,32 +66,43 @@ public class TypeSomethingVinillaRace {
       * @param c User typed letter. 
       */
      public void checkCorrect(char c){
-        if(this.letterList.get(currentLetter).getLetter() == c && !(isWrong)){
-            if(c == ' ')
-               this.correctLetters.append('_'); 
-            else
-                this.correctLetters.append(c);
-            
-            this.normalLetters.deleteCharAt(0);
-            currentLetter++;
-            isWrong = false;
-        }
-        else if(this.letterList.get(currentLetter).getLetter() != c || isWrong){
-            this.incorrectLetters.append(this.normalLetters.charAt(0));
-            //this.incorrectLetters += this.letterList.get(currentLetter).getLetter();
-            this.normalLetters.deleteCharAt(0);
-            //this.normalLetters = this.normalLetters.substring(1);
-            currentLetter++;
-            isWrong = true;
+        if(currentWrong <=6){
+            if(this.letterList.get(currentLetter).getLetter() == c && !(isWrong)){
+               if(c == ' ')
+                  this.correctLetters.append('_'); 
+               else
+                   this.correctLetters.append(c);
+
+               this.normalLetters.deleteCharAt(0);
+               currentLetter++;
+               isWrong = false;
+           }
+           else if(this.letterList.get(currentLetter).getLetter() != c || isWrong){
+               this.incorrectLetters.append(this.normalLetters.charAt(0));
+               this.normalLetters.deleteCharAt(0);
+               currentLetter++;
+               currentWrong++;
+               isWrong = true;
+           }
         }
      }
      
-     //Still not working but kinda close
-//     public void backSpace(){
-//         this.normalLetters += this.letterList.get(currentLetter).getLetter();
-//         this.incorrectLetters = this.incorrectLetters.substring(this.incorrectLetters.length());
-//         currentLetter--;
-//     }
+     /**
+      * If the most recent letter typed by the user is wrong they will be able to
+      * hit backspace and undo their mistake. 
+      */
+     public void backSpace(){
+        if(isWrong){
+            this.normalLetters.insert(0, this.letterList.get(currentLetter-1).getLetter());
+            this.incorrectLetters.deleteCharAt(this.incorrectLetters.length()-1);
+
+            if(this.incorrectLetters.length() == 0){
+                isWrong = false;
+            }
+            currentLetter--;
+            currentWrong--;
+        }
+     }
      
      /**
       * 
@@ -98,7 +114,25 @@ public class TypeSomethingVinillaRace {
     public String getNormalLetters() {return normalLetters.toString();}
     public String getCorrectLetters() {return correctLetters.toString();}
     public String getIncorrectLetters() {return incorrectLetters.toString();}
+    
+    public String getDisplayString() {
+        try{
+            int i = this.correctLetters.lastIndexOf("_");
+            if(i == -1)
+           return this.correctLetters.toString();
+        else
+           return this.correctLetters.substring(this.correctLetters.lastIndexOf("_")+1, this.correctLetters.length()-1);
+        }
+        catch(IndexOutOfBoundsException e){
+            return "";
+        }
 
+    }
+    
+    public String getCurrentLetter() {return String.valueOf(currentLetter);}
+    public boolean getIsWrong() {return this.isWrong;}
+    public int getCurrentWrong() {return this.currentWrong;}
+    
     public void setNormalLetters(String normalLetters) {
         this.normalLetters = new StringBuilder(normalLetters);
         

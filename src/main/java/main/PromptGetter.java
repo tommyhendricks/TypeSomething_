@@ -54,7 +54,7 @@ public class PromptGetter {
     
     public String getPrompt(){
        
-        return "wwwwwwwwwwww wwwwwwwwwwwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwww wwwwwwwwww";
+        return "This is a test prompt. Test Prompt ";
     }
     
     

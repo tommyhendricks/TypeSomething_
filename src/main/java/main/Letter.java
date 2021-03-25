@@ -19,18 +19,12 @@ public class Letter {
     
     public Letter(char letter){
         this.letter = letter;
-        this.typed = false;
-        this.isCorrect = false;
-        this.letterColor = Color.gray;
         
     }
     
     public Letter(){}
-    
+     
     public char getLetter(){return this.letter;}
 
-    public boolean isIsCorrect() {
-        return isCorrect;
-    }
     
 }
