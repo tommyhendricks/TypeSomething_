@@ -17,7 +17,7 @@ public class MainScreenWin extends javax.swing.JFrame {
      */
     public MainScreenWin() {
         ppw = new PlayerProfileWin();
-        vr = new TypeSomethingVinillaRaceWin();
+        vr = new TypeSomethingVinillaRaceWin(this);
         ppw.setVisible(false);
         ppw.setTitle("User Profile_");
         ppw.setLocationRelativeTo(null);

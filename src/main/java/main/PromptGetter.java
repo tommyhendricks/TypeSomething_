@@ -54,7 +54,7 @@ public class PromptGetter {
     
     public String getPrompt(){
        
-        return "This is a test prompt. Test Prompt ";
+        return this.stringToReturn;
     }
     
     
