@@ -12,6 +12,7 @@ https://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html
 
 package main;
 
+import UI.AfterRaceWin;
 import UI.MainScreenWin;
 
 /**
@@ -43,6 +44,9 @@ public class MainClass {
         msw.setVisible(true);
         msw.setTitle("Type Something_");
         msw.setLocationRelativeTo(null);
+//        UI.AfterRaceWin a = new UI.AfterRaceWin();
+//        a.setVisible(true);
+//        a.setLocationRelativeTo(null);
        
     }
 }

@@ -13,70 +13,61 @@ import java.util.ArrayList;
  */
 public class PlayerData {
     private static int allTimePrompts;
-    private static int allTimeAvgWpm;
     private static int allTimeTopWpm;
+    private static int allTimeAvgWpm;
+    private static int allTimeAvgWpmNum;
     private static int allTimeAvgError;
+    private static int allTimeAvgErrorNum;
     
     private static int pastAvgRaces;
     private static int pastAvgErrors;
     private static int TopSpeed;
     
-    private static ArrayList<int[]> pastRaceList = new ArrayList<int[]>();
+    private static ArrayList<Integer> pastRaceList;
     
     
     PlayerData(){
+        pastRaceList = new ArrayList<Integer>();
+
         pastRaceList.clear();
         
+    }
+    
+    
+    public void updateUserRaceData(int lrWPM, int lrErrors){
+        
+        //All Time stats:
+        //Adds one to the total prompts completed 
+        this.allTimePrompts++;
+        
+        //Check to see if this one is the new fastest race
+        if(this.allTimeTopWpm < lrWPM)
+            this.allTimeTopWpm = lrWPM;
+        
+        //Update the all time average typing speed
+        this.allTimeAvgWpmNum += lrWPM;
+        this.allTimeAvgWpm = this.allTimeAvgWpmNum / this.allTimePrompts;
+        
+        //Update the all time average errors
+        this.allTimeAvgErrorNum += lrErrors;
+        this.allTimeAvgError = this.allTimeAvgErrorNum / this.allTimePrompts;
+        
+        if(this.pastRaceList.size() > 15)
+            this.pastRaceList.remove(0);
+        
+        this.pastRaceList.add(lrWPM);
+        
+        
         
     }
     
-    //Getters for Player Info
-
-    public static int getAllTimePrompts() {return allTimePrompts;}
-    
-    public static int getAllTimeAvgWpm() {return allTimeAvgWpm;}
-    
-    public static int getAllTimeTopWpm() {return allTimeTopWpm;}
-    
-    public static int getAllTimeAvgError() {return allTimeAvgError;}
-    
-    public static int getPastAvgRaces() {return pastAvgRaces;}
-    
-    public static int getPastAvgErrors() {return pastAvgErrors;}
-    
-    public static int getTopSpeed() {return TopSpeed;}
-    
-    //Setter for Player Info
-
-    public static void setAllTimePrompts(int allTimePrompts) {
-        PlayerData.allTimePrompts = allTimePrompts;
+    public void saveProfile(){
+        
     }
-
-    public static void setAllTimeAvgWpm(int allTimeAvgWpm) {
-        PlayerData.allTimeAvgWpm = allTimeAvgWpm;
+    
+    public void loadProfile(){
+        
     }
-
-    public static void setAllTimeTopWpm(int allTimeTopWpm) {
-        PlayerData.allTimeTopWpm = allTimeTopWpm;
-    }
-
-    public static void setAllTimeAvgError(int allTimeAvgError) {
-        PlayerData.allTimeAvgError = allTimeAvgError;
-    }
-
-    public static void setPastAvgRaces(int pastAvgRaces) {
-        PlayerData.pastAvgRaces = pastAvgRaces;
-    }
-
-    public static void setPastAvgErrors(int pastAvgErrors) {
-        PlayerData.pastAvgErrors = pastAvgErrors;
-    }
-
-    public static void setTopSpeed(int TopSpeed) {
-        PlayerData.TopSpeed = TopSpeed;
-    }
-
-
     
     
 }

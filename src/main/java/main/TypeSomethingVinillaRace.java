@@ -8,7 +8,9 @@ package main;
 import java.util.ArrayList;
 
 /**
- *
+ * This will handle all of the data related to the Vanilla race that is going on
+ * This handles getting the typing speed, making sure the correct letters are being
+ * typed, setting up the prompt and resetting the race. 
  * @author Tommy Hendricks
  */
 public class TypeSomethingVinillaRace {
@@ -24,17 +26,23 @@ public class TypeSomethingVinillaRace {
     
     private int currentLetter;
     private int currentWrong;
+    private int totalLetterNoWhiteSpace;
     private int totalLetter;
     private int totalErrors;
     private int totalWords;
     
     private long startTime;
     private long currentTime;
+    private float totalTime;
     private float elapsedTime;
     private float typingSpeed;
     private float wpm;
+    
+    private UI.AfterRaceWin arw;
 
     public TypeSomethingVinillaRace(String prompt) {
+        arw = new UI.AfterRaceWin();
+        arw.setLocationRelativeTo(null);
         letterList = new ArrayList<Letter>();
         this.prompt = prompt;
         createLetterList(this.prompt);
@@ -43,6 +51,7 @@ public class TypeSomethingVinillaRace {
         
         currentWrong = 0;
         currentLetter = 0;
+        totalLetterNoWhiteSpace = 0;
         totalLetter = 0;
         totalErrors = 0;
         totalWords = 1;
@@ -66,7 +75,6 @@ public class TypeSomethingVinillaRace {
         for(int i=0; i<prompt.length(); i++){
             letter = new Letter(prompt.charAt(i));
             letterList.add(letter);
-            totalLetter++;
         } 
      }
      
@@ -84,13 +92,23 @@ public class TypeSomethingVinillaRace {
         }
         //This will check to see if there are more than 6 errors
         //If there are then it wont take anymore input
-        if(currentWrong <=5){
+        if(this.currentWrong <=5){
             //If correct input
-            if(this.letterList.get(currentLetter).getLetter() == c && !(isWrong)){
+            if(this.letterList.get(this.currentLetter).getLetter() == c && !(isWrong)){
+               if(c != ' '){
+                    this.totalLetterNoWhiteSpace++;
+                    if(totalLetterNoWhiteSpace %5 == 0 && !this.isWrong){
+                        this.updateTypingSpeed();
+                        totalWords++;
+                    }
+               }
+                   
+               System.out.println(this.totalLetterNoWhiteSpace);
                this.correctLetters.append(c);
                this.normalLetters.deleteCharAt(0);
-               currentLetter++;
-               isWrong = false;
+               this.currentLetter++;
+               this.totalLetter++;
+               this.isWrong = false;
            }
             //If incorrect input
            else if(this.letterList.get(currentLetter).getLetter() != c || isWrong){
@@ -103,13 +121,10 @@ public class TypeSomethingVinillaRace {
                
            }
            //If prompt if finished
-           if(currentLetter == this.prompt.length()){
+           if(currentLetter == this.prompt.length() && !this.isWrong){
                this.promptFinished = true;
                this.updateTypingSpeed();
-           }
-           if(currentLetter %5 == 0){
-               this.updateTypingSpeed();
-               totalWords++;
+               this.raceFinished();
            }
         }
      }
@@ -150,13 +165,17 @@ public class TypeSomethingVinillaRace {
     }
      
     /**
+     * This will be called after every 5 characters that are 
+     * typed that are not white spaces.
      * 
      */ 
     public void updateTypingSpeed(){
         this.currentTime = System.nanoTime();
         this.elapsedTime = this.currentTime - this.startTime;
         this.elapsedTime /= 1000000000;
+        this.totalTime += this.elapsedTime;
         this.startTime = this.currentTime;
+        
         
         this.typingSpeed += 60/this.elapsedTime;
         this.wpm = this.typingSpeed / totalWords;
@@ -172,9 +191,18 @@ public class TypeSomethingVinillaRace {
      }
      
      /**
-      * 
+      * When the race is finished this will be called and set the information
+      * on the AfterRaceWin that will be displayed. 
       */
      public void raceFinished(){
+         float percentage;
+         int totalCorrect = this.totalLetter - this.totalErrors;
+         percentage = (totalCorrect / (float)this.totalLetter) * 100;
+         
+         this.arw.setInfo(this.wpm, this.totalErrors, this.totalTime, percentage);
+         
+         this.arw.setVisible(true);
+         
          
      }
      
@@ -191,7 +219,7 @@ public class TypeSomethingVinillaRace {
     public boolean getIsWrong() {return this.isWrong;}
     public int getCurrentWrong() {return this.currentWrong;}
     
-    public float getTypingSpeed() {return this.wpm;} 
+    public float getTypingSpeed() {return this.wpm;}
     
     public void setNormalLetters(String normalLetters) {
         this.normalLetters = new StringBuilder(this.prompt);

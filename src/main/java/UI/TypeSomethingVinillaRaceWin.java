@@ -103,12 +103,11 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         paneUserInputArea = new javax.swing.JTextPane();
         MainMenu = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        TypeSpeed = new javax.swing.JTextPane();
         correctColorShowerPannel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         panePromptArea = new javax.swing.JTextPane();
+        TypeSpeed = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -146,12 +145,6 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
             }
         });
 
-        TypeSpeed.setEditable(false);
-        TypeSpeed.setBackground(new java.awt.Color(0, 0, 0));
-        TypeSpeed.setBorder(null);
-        TypeSpeed.setForeground(new java.awt.Color(255, 255, 255));
-        jScrollPane3.setViewportView(TypeSpeed);
-
         correctColorShowerPannel.setBackground(new java.awt.Color(255, 255, 255));
         correctColorShowerPannel.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -183,6 +176,12 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
         );
 
+        TypeSpeed.setBackground(new java.awt.Color(0, 0, 0));
+        TypeSpeed.setFont(new java.awt.Font("Yu Gothic Light", 0, 24)); // NOI18N
+        TypeSpeed.setForeground(new java.awt.Color(255, 255, 255));
+        TypeSpeed.setText("0");
+        TypeSpeed.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -198,20 +197,18 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
                         .addComponent(correctColorShowerPannel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -250,33 +247,34 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
     }//GEN-LAST:event_MainMenuActionPerformed
 
     private void paneUserInputAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_paneUserInputAreaKeyTyped
-        if(raceData.getCurrentWrong() <= 6 && !raceData.getPromptcompleted())
-            this.paneUserInputArea.setEditable(true);
-        else
-            this.paneUserInputArea.setEditable(false);
+        if(!raceData.getPromptcompleted()){
+            if(raceData.getCurrentWrong() <= 6 && !raceData.getPromptcompleted())
+                this.paneUserInputArea.setEditable(true);
+            else
+                this.paneUserInputArea.setEditable(false);
 
-        if(evt.getKeyChar() == KeyEvent.VK_SPACE){
-            this.raceData.checkCorrect(' ');
-            this.TypeSpeed.setText(String.format("%.0f", raceData.getTypingSpeed()));
+            if(evt.getKeyChar() == KeyEvent.VK_SPACE){
+                this.raceData.checkCorrect(' ');
+                this.TypeSpeed.setText(String.format("%.0f", raceData.getTypingSpeed()));
+            }
+            else if(evt.getKeyChar() == KeyEvent.VK_BACKSPACE && raceData.getIsWrong()){
+                this.raceData.backSpace();
+            }
+            else if(evt.getKeyChar() != KeyEvent.VK_BACKSPACE){
+                this.raceData.checkCorrect(evt.getKeyChar()); 
+            }
+            this.setPaneAreaPrompt();    
+            this.paneUserInputArea.setText(raceData.getDisplayString());
+
+            if(!raceData.getIsWrong())
+                this.correctColorShowerPannel.setBackground(green);
+            else
+                this.correctColorShowerPannel.setBackground(red);
         }
-        else if(evt.getKeyChar() == KeyEvent.VK_BACKSPACE && raceData.getIsWrong()){
-            this.raceData.backSpace();
-        }
-        else if(evt.getKeyChar() != KeyEvent.VK_BACKSPACE){
-            this.raceData.checkCorrect(evt.getKeyChar()); 
-        }
-        this.setPaneAreaPrompt();    
-        this.paneUserInputArea.setText(raceData.getDisplayString());
-        
-        if(!raceData.getIsWrong())
-            this.correctColorShowerPannel.setBackground(green);
-        else
-            this.correctColorShowerPannel.setBackground(red);
     }//GEN-LAST:event_paneUserInputAreaKeyTyped
 
     private void paneUserInputAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_paneUserInputAreaKeyReleased
        
-        
     }//GEN-LAST:event_paneUserInputAreaKeyReleased
 
     private void paneUserInputAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_paneUserInputAreaKeyPressed
@@ -287,13 +285,12 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton MainMenu;
     private javax.swing.JButton NextRace;
-    private javax.swing.JTextPane TypeSpeed;
+    private javax.swing.JLabel TypeSpeed;
     private javax.swing.JPanel correctColorShowerPannel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextPane panePromptArea;
     private javax.swing.JTextPane paneUserInputArea;
     // End of variables declaration//GEN-END:variables
