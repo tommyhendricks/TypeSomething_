@@ -32,8 +32,6 @@ public class AfterRaceWin extends javax.swing.JFrame {
         String s2 = null;
         String s1 = null;
         
-        time = 75;
-        
         this.LastRaceSpeed.setText(String.format("%.0f", WPM));
         this.LastRaceErrors.setText(String.valueOf(Errors));
         this.LastRacePercentage.setText(String.format("%.0f", percentage) + '%');

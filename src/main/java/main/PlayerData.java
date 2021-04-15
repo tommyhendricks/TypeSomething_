@@ -12,24 +12,44 @@ import java.util.ArrayList;
  * @author Tommy Hendricks
  */
 public class PlayerData {
+    
+    //All time player stats:
     private static int allTimePrompts;
     private static int allTimeTopWpm;
+    
     private static int allTimeAvgWpm;
     private static int allTimeAvgWpmNum;
+    
     private static int allTimeAvgError;
     private static int allTimeAvgErrorNum;
     
-    private static int pastAvgRaces;
-    private static int pastAvgErrors;
-    private static int TopSpeed;
+    private static ArrayList<Integer> AllpastRaceList;
     
-    private static ArrayList<Integer> pastRaceList;
+    
+    //Vinilla race data
+    private static int VRallTimeTopWpm;
+    private static int VRallTimePrompts;
+    
+    private static int VRallTimeAvgWpm;
+    private static int VRallTimeAvgWpmNum;
+    
+    private static int VRallTimeAvgErrors;
+    private static int VRallTimeAvgErrorsNum;
+    
+    
+    private static ArrayList<Integer> VRpastRaceList;
+    
+    
+    //Check Point race data
+    
+    
+    //Instant Death race data
     
     
     PlayerData(){
-        pastRaceList = new ArrayList<Integer>();
-
-        pastRaceList.clear();
+        VRpastRaceList = new ArrayList<Integer>();
+        AllpastRaceList = new ArrayList<Integer>();
+        
         
     }
     
@@ -52,14 +72,37 @@ public class PlayerData {
         this.allTimeAvgErrorNum += lrErrors;
         this.allTimeAvgError = this.allTimeAvgErrorNum / this.allTimePrompts;
         
-        if(this.pastRaceList.size() > 15)
-            this.pastRaceList.remove(0);
+        //This will add the race to the end of the last 15 races list. 
+        if(this.AllpastRaceList.size() > 15)
+            this.AllpastRaceList.remove(0);
         
-        this.pastRaceList.add(lrWPM);
+        this.AllpastRaceList.add(lrWPM);
         
-        
-        
+ 
     }
+    
+    public void updateVinillaRaceData(int vrWPM, int vrErrors){
+        //Add to total prompts
+        this.VRallTimePrompts++;
+        
+        //Check to see if this is the new fastest
+        if(this.VRallTimeTopWpm < vrWPM)
+            this.VRallTimeTopWpm = vrWPM;
+        
+        //Update the all time average WPM
+        this.VRallTimeAvgWpmNum += vrWPM;
+        this.VRallTimeAvgWpm /= this.VRallTimePrompts;
+        
+        //Update the all time average Errors
+        this.VRallTimeAvgErrorsNum += vrErrors;
+        this.VRallTimeAvgErrors /= VRallTimePrompts;
+        
+        // add to the list of the last 15 races
+        if(this.VRpastRaceList.size() > 15)
+            this.VRpastRaceList.remove(0);
+        this.VRpastRaceList.add(vrWPM);
+    }
+    
     
     public void saveProfile(){
         

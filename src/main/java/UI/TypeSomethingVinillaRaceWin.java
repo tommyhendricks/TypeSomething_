@@ -33,6 +33,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
     private Color red = new Color(100, 40, 60);
     private int currentLetterNumber;
     private String prompt;
+    main.PromptGetter pg;
     main.TypeSomethingVinillaRace raceData;
     UI.MainScreenWin msw;
     /**
@@ -42,19 +43,24 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         this.msw = msw;
         currentLetterNumber = 0;
         
-        PromptGetter pg = new PromptGetter();
-        prompt = pg.getPrompt();
-        raceData = new main.TypeSomethingVinillaRace(prompt);
+        //makes new promptGetter
+        pg = new PromptGetter();
+        
+        //Gets and send the prompot to the raceData class and t
+        this.prompt = pg.getPrompt();
+        raceData = new main.TypeSomethingVinillaRace(this.prompt);
+        raceData.setNormalLetters(this.prompt);
         
         initComponents();
         
+        //Setting up the jTextArea so that it will work correctly 
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();
         StyleConstants.setItalic(attributeSet, true);
         this.panePromptArea.setCharacterAttributes(attributeSet, true);
                 
-        Font font = new Font("Serif", Font.BOLD, 18);
+        Font font = new Font("Arial", Font.PLAIN, 22);
         this.panePromptArea.setFont(font);
-        raceData.setNormalLetters(prompt);
+        
         this.setPaneAreaPrompt();
     }
     
@@ -70,9 +76,11 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
             StyleConstants.setForeground(style, green);
             StyleConstants.setBackground(style, Color.BLACK);
             doc.insertString(doc.getLength(), raceData.getCorrectLetters(), style);
+            
             StyleConstants.setForeground(style, Color.white);
             StyleConstants.setBackground(style, red);
-            doc.insertString(doc.getLength(), raceData.getIncorrectLetters(), style);
+            doc.insertString(doc.getLength(), raceData.getIncorrectLetters(), style);   
+            
             StyleConstants.setForeground(style, black);
             StyleConstants.setBackground(style, Color.BLACK);
             doc.insertString(doc.getLength(), raceData.getNormalLetters(), style);
@@ -80,14 +88,8 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         catch(Exception e){
             
         }
-        
-        
     }
     
-    public void setTextPaneText(){
-        
-        
-    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -108,8 +110,6 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         panePromptArea = new javax.swing.JTextPane();
         TypeSpeed = new javax.swing.JLabel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -162,7 +162,8 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         panePromptArea.setEditable(false);
         panePromptArea.setBackground(new java.awt.Color(0, 0, 0));
         panePromptArea.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        panePromptArea.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        panePromptArea.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        panePromptArea.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
         jScrollPane2.setViewportView(panePromptArea);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -179,6 +180,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         TypeSpeed.setBackground(new java.awt.Color(0, 0, 0));
         TypeSpeed.setFont(new java.awt.Font("Yu Gothic Light", 0, 24)); // NOI18N
         TypeSpeed.setForeground(new java.awt.Color(255, 255, 255));
+        TypeSpeed.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         TypeSpeed.setText("0");
         TypeSpeed.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
@@ -187,22 +189,22 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(26, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(MainMenu)
-                        .addGap(500, 500, 500)
-                        .addComponent(NextRace))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
-                        .addComponent(correctColorShowerPannel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(MainMenu)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(NextRace))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
+                                .addComponent(correctColorShowerPannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,10 +218,10 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(MainMenu)
-                    .addComponent(NextRace))
-                .addGap(23, 23, 23))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(MainMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                    .addComponent(NextRace, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -236,8 +238,21 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Should handle resetting the race when the Next Race button is clicked.
+     * @param evt 
+     */
     private void NextRaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextRaceActionPerformed
-     
+        //Call the reset function, Sets normal letters to the correct prompt
+        //Sets the prompt area. 
+        this.raceData.resetRace(pg.getPrompt());
+        
+        raceData.setNormalLetters(raceData.getPrompt());
+        this.TypeSpeed.setText("0");
+        this.correctColorShowerPannel.setBackground(Color.GRAY);
+        this.paneUserInputArea.setText("");
+        this.setPaneAreaPrompt();
+        
     }//GEN-LAST:event_NextRaceActionPerformed
 
     private void MainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MainMenuActionPerformed
@@ -255,7 +270,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
 
             if(evt.getKeyChar() == KeyEvent.VK_SPACE){
                 this.raceData.checkCorrect(' ');
-                this.TypeSpeed.setText(String.format("%.0f", raceData.getTypingSpeed()));
+                this.TypeSpeed.setText(String.format("%.0f", raceData.getTypingSpeed()) + " WPM");
             }
             else if(evt.getKeyChar() == KeyEvent.VK_BACKSPACE && raceData.getIsWrong()){
                 this.raceData.backSpace();
@@ -271,6 +286,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
             else
                 this.correctColorShowerPannel.setBackground(red);
         }
+        this.TypeSpeed.setText(String.format("%.0f", raceData.getTypingSpeed()) + " WPM");
     }//GEN-LAST:event_paneUserInputAreaKeyTyped
 
     private void paneUserInputAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_paneUserInputAreaKeyReleased

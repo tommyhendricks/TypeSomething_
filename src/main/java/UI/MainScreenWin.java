@@ -17,11 +17,10 @@ public class MainScreenWin extends javax.swing.JFrame {
      */
     public MainScreenWin() {
         ppw = new PlayerProfileWin();
-        vr = new TypeSomethingVinillaRaceWin(this);
         ppw.setVisible(false);
         ppw.setTitle("User Profile_");
         ppw.setLocationRelativeTo(null);
-        vr.setLocationRelativeTo(null);
+        
         initComponents();
     }
 
@@ -56,7 +55,7 @@ public class MainScreenWin extends javax.swing.JFrame {
         TypeSomethingTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         TypeSomethingTitleLabel.setText("Type Something_");
 
-        profileButton.setBackground(new java.awt.Color(255, 255, 255));
+        profileButton.setBackground(new java.awt.Color(153, 153, 153));
         profileButton.setFont(new java.awt.Font("Yu Gothic", 1, 18)); // NOI18N
         profileButton.setText("Profile");
         profileButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
@@ -66,9 +65,9 @@ public class MainScreenWin extends javax.swing.JFrame {
             }
         });
 
-        TypeSomethingBasicRace.setBackground(new java.awt.Color(255, 255, 255));
+        TypeSomethingBasicRace.setBackground(new java.awt.Color(153, 153, 153));
         TypeSomethingBasicRace.setFont(new java.awt.Font("Yu Gothic", 1, 18)); // NOI18N
-        TypeSomethingBasicRace.setText("Type Something");
+        TypeSomethingBasicRace.setText("Race");
         TypeSomethingBasicRace.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
         TypeSomethingBasicRace.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,6 +116,9 @@ public class MainScreenWin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TypeSomethingBasicRaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TypeSomethingBasicRaceActionPerformed
+        vr = new TypeSomethingVinillaRaceWin(this);
+        vr.setLocationRelativeTo(null);
+        vr.setTitle("TypeSomething_Vanilla Race");
         this.setVisible(false);
         vr.setVisible(true);
     }//GEN-LAST:event_TypeSomethingBasicRaceActionPerformed

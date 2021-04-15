@@ -39,13 +39,21 @@ public class TypeSomethingVinillaRace {
     private float wpm;
     
     private UI.AfterRaceWin arw;
+    private PlayerData pd;
 
     public TypeSomethingVinillaRace(String prompt) {
+        //After Race window stuff
         arw = new UI.AfterRaceWin();
         arw.setLocationRelativeTo(null);
+        arw.setTitle("Race Stats");
+        
+        pd = new PlayerData();
+        
+        //Make the LetterList and create it
         letterList = new ArrayList<Letter>();
         this.prompt = prompt;
-        createLetterList(this.prompt);
+        createLetterList(prompt);
+        
         promptFinished = false;
         isWrong = false;
         
@@ -59,6 +67,7 @@ public class TypeSomethingVinillaRace {
         startTime = 0;
         currentTime = 0;
         elapsedTime = 0;
+        totalTime = 0;
        
         
         normalLetters = new StringBuilder();
@@ -72,6 +81,8 @@ public class TypeSomethingVinillaRace {
      * @param prompt The current prompt that is going to be used.
      */
      private void createLetterList(String prompt){
+        letterList.clear();
+        
         for(int i=0; i<prompt.length(); i++){
             letter = new Letter(prompt.charAt(i));
             letterList.add(letter);
@@ -95,36 +106,38 @@ public class TypeSomethingVinillaRace {
         if(this.currentWrong <=5){
             //If correct input
             if(this.letterList.get(this.currentLetter).getLetter() == c && !(isWrong)){
-               if(c != ' '){
+                if(c != ' '){
                     this.totalLetterNoWhiteSpace++;
+                    // update typing speed every 5 none whitespace characters types
+                    //(Avg of all words)
                     if(totalLetterNoWhiteSpace %5 == 0 && !this.isWrong){
                         this.updateTypingSpeed();
                         totalWords++;
-                    }
-               }
-                   
-               System.out.println(this.totalLetterNoWhiteSpace);
-               this.correctLetters.append(c);
-               this.normalLetters.deleteCharAt(0);
-               this.currentLetter++;
-               this.totalLetter++;
-               this.isWrong = false;
-           }
+                        }
+                }
+                this.correctLetters.append(c);
+                this.normalLetters.deleteCharAt(0);
+                this.currentLetter++;
+                this.totalLetter++;
+                this.isWrong = false;
+            }
             //If incorrect input
-           else if(this.letterList.get(currentLetter).getLetter() != c || isWrong){
-               this.incorrectLetters.append(this.normalLetters.charAt(0));
-               this.normalLetters.deleteCharAt(0);
-               currentLetter++;
-               currentWrong++;
-               totalErrors++;
-               isWrong = true;
+            else if(this.letterList.get(currentLetter).getLetter() != c || isWrong){
+                this.incorrectLetters.append(this.normalLetters.charAt(0));
+                this.normalLetters.deleteCharAt(0);
+                currentLetter++;
+                currentWrong++;
+                totalErrors++;
+                isWrong = true;
                
-           }
-           //If prompt if finished
-           if(currentLetter == this.prompt.length() && !this.isWrong){
-               this.promptFinished = true;
-               this.updateTypingSpeed();
-               this.raceFinished();
+            }
+            //If prompt if finished
+            if(currentLetter == this.prompt.length() && !this.isWrong){
+                this.promptFinished = true;
+                if (this.currentLetter % 5 >3) {
+                    this.updateTypingSpeed();
+                }
+                this.raceFinished();
            }
         }
      }
@@ -182,30 +195,74 @@ public class TypeSomethingVinillaRace {
         
         System.out.println(this.elapsedTime);
     } 
-     
+    
     /**
-     * One the race is finished or the 
+     * This will give you a new prompt
+     * @param prompt 
      */
-     public void resetRace(){
+    private void newLetterList(String prompt){
+        letterList.clear();
+        
+        for(int i=0; i<prompt.length(); i++){
+            letter = new Letter(prompt.charAt(i));
+            letterList.add(letter);
+        }
+        
+    }
+    
+    /**
+    * When the race is finished this will be called and set the information
+    * on the AfterRaceWin that will be displayed. 
+    */
+    public void raceFinished(){
+        float percentage;
+        int totalCorrect = this.totalLetter - this.totalErrors;
+        percentage = (totalCorrect / (float)this.totalLetter) * 100;
          
-     }
-     
-     /**
-      * When the race is finished this will be called and set the information
-      * on the AfterRaceWin that will be displayed. 
-      */
-     public void raceFinished(){
-         float percentage;
-         int totalCorrect = this.totalLetter - this.totalErrors;
-         percentage = (totalCorrect / (float)this.totalLetter) * 100;
+        this.arw.setInfo(this.wpm, this.totalErrors, (int)this.totalTime, percentage);
          
-         this.arw.setInfo(this.wpm, this.totalErrors, this.totalTime, percentage);
-         
-         this.arw.setVisible(true);
-         
-         
-     }
-     
+        this.arw.setVisible(true);
+        
+        //update playerData
+        pd.updateUserRaceData((int)this.wpm, totalErrors);
+        pd.updateVinillaRaceData((int)this.wpm, totalErrors);
+
+    }
+    
+    /**
+     * This will handle resetting the race Data class. Everything will be reset
+     * to its start values and some other variables that need to be reset too.
+     * @param prompt The new prompt that you want to give raceData
+     */ 
+    public void resetRace(String prompt){
+        
+        this.prompt = prompt;
+        this.promptFinished = false;
+        this.isWrong = false;
+        
+        //Important for reseting the stirng builders
+        correctLetters.delete(0, this.currentLetter);
+        
+        this.currentWrong = 0;
+        this.currentLetter = 0;
+        this.totalLetterNoWhiteSpace = 0;
+        this.totalLetter = 0;
+        this.totalErrors = 0;
+        this.totalWords = 1;
+        
+        this.startTime = 0;
+        this.currentTime = 0;
+        this.elapsedTime = 0;
+        this.totalTime = 0;
+        
+        this.wpm = 0;
+        this.typingSpeed = 0;
+        this.totalErrors = 0;
+        
+        this.newLetterList(prompt);
+        
+    }
+    
     //Getters and Setters 
     public ArrayList<Letter> letterListGetter(){return this.letterList;}
     public String getPrompt(){return this.prompt;}
@@ -221,10 +278,8 @@ public class TypeSomethingVinillaRace {
     
     public float getTypingSpeed() {return this.wpm;}
     
-    public void setNormalLetters(String normalLetters) {
-        this.normalLetters = new StringBuilder(this.prompt);
-        
-        
+    public void setNormalLetters(String prompt) {
+        this.normalLetters = new StringBuilder(prompt);
     }
     
     
