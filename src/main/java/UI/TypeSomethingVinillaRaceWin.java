@@ -10,10 +10,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.Timer;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
@@ -27,12 +31,18 @@ import main.PromptGetter;
  *
  * @author Tommy Hendricks
  */
-public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
+public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements ActionListener{
     private Color black = Color.WHITE;
     private Color green = Color.GREEN;
     private Color red = new Color(100, 40, 60);
     private int currentLetterNumber;
     private String prompt;
+    private boolean startRace;
+    
+    private Timer timer;
+    private int speed;
+    private int loop;
+    
     main.PromptGetter pg;
     main.TypeSomethingVinillaRace raceData;
     UI.MainScreenWin msw;
@@ -41,7 +51,11 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
      */
     public TypeSomethingVinillaRaceWin(MainScreenWin msw) {
         this.msw = msw;
+        
+        startRace = false;
         currentLetterNumber = 0;
+        speed = 1000;
+        loop = 4;
         
         //makes new promptGetter
         pg = new PromptGetter();
@@ -62,6 +76,13 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         this.panePromptArea.setFont(font);
         
         this.setPaneAreaPrompt();
+        
+        timer = new Timer(speed, this);
+        timer.setInitialDelay(0);
+        timer.start(); 
+        
+        this.paneUserInputArea.setEditable(false);
+        //this.paneUserInputArea.requestFocus();
     }
     
     /**
@@ -90,6 +111,21 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         }
     }
     
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(this.loop == 4)
+            this.startLight.setIcon(new ImageIcon(getClass().getResource("/RedLight.png")));
+        else if (this.loop == 3)
+            this.startLight.setIcon(new ImageIcon(getClass().getResource("/YellowLight.png")));
+        else if(this.loop == 1){
+            this.startLight.setIcon(new ImageIcon(getClass().getResource("/GreenLight.png")));
+            timer.stop();
+            this.startRace = true;
+            this.paneUserInputArea.setEditable(true);
+            this.paneUserInputArea.requestFocus();
+        }
+        loop--;
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,6 +146,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         panePromptArea = new javax.swing.JTextPane();
         TypeSpeed = new javax.swing.JLabel();
+        startLight = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -121,6 +158,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
             }
         });
 
+        paneUserInputArea.setEditable(false);
         paneUserInputArea.setBackground(new java.awt.Color(0, 0, 0));
         paneUserInputArea.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         paneUserInputArea.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -174,15 +212,18 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
         );
 
         TypeSpeed.setBackground(new java.awt.Color(0, 0, 0));
-        TypeSpeed.setFont(new java.awt.Font("Yu Gothic Light", 0, 24)); // NOI18N
+        TypeSpeed.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         TypeSpeed.setForeground(new java.awt.Color(255, 255, 255));
         TypeSpeed.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         TypeSpeed.setText("0");
         TypeSpeed.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        startLight.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        startLight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/RedLight.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -203,15 +244,23 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
                                     .addComponent(NextRace))
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
                                 .addComponent(correctColorShowerPannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(51, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(startLight, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(101, 101, 101)
+                                .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(startLight, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(correctColorShowerPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -252,17 +301,19 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
         this.correctColorShowerPannel.setBackground(Color.GRAY);
         this.paneUserInputArea.setText("");
         this.setPaneAreaPrompt();
+        this.paneUserInputArea.setEditable(false);
         
+        this.loop = 4;
+        this.timer.start();
     }//GEN-LAST:event_NextRaceActionPerformed
 
     private void MainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MainMenuActionPerformed
         this.setVisible(false);
-        
         msw.setVisible(true);
     }//GEN-LAST:event_MainMenuActionPerformed
 
     private void paneUserInputAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_paneUserInputAreaKeyTyped
-        if(!raceData.getPromptcompleted()){
+        if(!raceData.getPromptcompleted() && this.startRace){
             if(raceData.getCurrentWrong() <= 6 && !raceData.getPromptcompleted())
                 this.paneUserInputArea.setEditable(true);
             else
@@ -286,7 +337,11 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
             else
                 this.correctColorShowerPannel.setBackground(red);
         }
-        this.TypeSpeed.setText(String.format("%.0f", raceData.getTypingSpeed()) + " WPM");
+        if(raceData.getPromptcompleted()){
+            this.startRace = false;
+            this.TypeSpeed.setText(String.format("%.0f", raceData.getTypingSpeed()) + " WPM");
+        }
+        
     }//GEN-LAST:event_paneUserInputAreaKeyTyped
 
     private void paneUserInputAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_paneUserInputAreaKeyReleased
@@ -309,5 +364,6 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextPane panePromptArea;
     private javax.swing.JTextPane paneUserInputArea;
+    private javax.swing.JLabel startLight;
     // End of variables declaration//GEN-END:variables
 }

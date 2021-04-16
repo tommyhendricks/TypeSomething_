@@ -46,7 +46,7 @@ public class PlayerData {
     //Instant Death race data
     
     
-    PlayerData(){
+    public PlayerData(){
         VRpastRaceList = new ArrayList<Integer>();
         AllpastRaceList = new ArrayList<Integer>();
         
@@ -112,5 +112,6 @@ public class PlayerData {
         
     }
     
+    public int getAllTimePromptsNum(){return this.allTimePrompts;}
     
 }

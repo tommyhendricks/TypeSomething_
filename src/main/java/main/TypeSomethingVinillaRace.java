@@ -6,6 +6,7 @@
 package main;
 
 import java.util.ArrayList;
+import javax.swing.Timer;
 
 /**
  * This will handle all of the data related to the Vanilla race that is going on
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * typed, setting up the prompt and resetting the race. 
  * @author Tommy Hendricks
  */
-public class TypeSomethingVinillaRace {
+public class TypeSomethingVinillaRace{
     private boolean promptFinished;
     private boolean isWrong;
     private String prompt;
@@ -127,9 +128,10 @@ public class TypeSomethingVinillaRace {
                 this.normalLetters.deleteCharAt(0);
                 currentLetter++;
                 currentWrong++;
-                totalErrors++;
                 isWrong = true;
-               
+               if(this.currentWrong == 1){
+                   totalErrors++;
+               }
             }
             //If prompt if finished
             if(currentLetter == this.prompt.length() && !this.isWrong){
@@ -281,7 +283,5 @@ public class TypeSomethingVinillaRace {
     public void setNormalLetters(String prompt) {
         this.normalLetters = new StringBuilder(prompt);
     }
-    
-    
     
 }

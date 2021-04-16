@@ -18,4 +18,12 @@
             <version>2.8.6</version>
         </dependency>
     </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes><include>*.png</include></includes>
+            </resource>
+        </resources>
+    </build>
 </project>

@@ -53,8 +53,8 @@ public class PromptGetter {
     }
     
     public String getPrompt(){
-        return "This is the test prompt I hope that you like it. This is the second sentence. This is the third one.";
-        //return "the short test one";
+        //return "This is the test prompt I hope that you like it. This is the second sentence. This is the third one.";
+        return "the short test one";
         //return this.stringToReturn;
     }
     

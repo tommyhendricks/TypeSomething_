@@ -161,7 +161,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="allTimeAvgWpmNumberLabel" max="32767" attributes="0"/>
+                          <Component id="allTimeAvgWpm" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="allTimeAvgWpmLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="20" max="32767" attributes="0"/>
@@ -177,7 +177,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="allTimeAvgWpmLabel" min="-2" pref="33" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="allTimeAvgWpmNumberLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="allTimeAvgWpm" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -195,7 +195,7 @@
                 <Property name="text" type="java.lang.String" value="All Time Avg WPM"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="allTimeAvgWpmNumberLabel">
+            <Component class="javax.swing.JLabel" name="allTimeAvgWpm">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="48" style="0"/>
@@ -228,7 +228,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="totalPromptsNumberLabel" max="32767" attributes="0"/>
+                          <Component id="AllTimePrompts" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="totalPrompts" min="-2" pref="106" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="59" max="32767" attributes="0"/>
@@ -244,7 +244,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="totalPrompts" min="-2" pref="33" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="totalPromptsNumberLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="AllTimePrompts" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -262,7 +262,7 @@
                 <Property name="text" type="java.lang.String" value="Total Prompts"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="totalPromptsNumberLabel">
+            <Component class="javax.swing.JLabel" name="AllTimePrompts">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="48" style="0"/>
@@ -295,7 +295,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="wordsPerMinLabel2" max="32767" attributes="0"/>
+                          <Component id="AllTimeAvgErrors" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="allTimeAvgLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="18" max="32767" attributes="0"/>
@@ -311,7 +311,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="allTimeAvgLabel2" min="-2" pref="33" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="wordsPerMinLabel2" min="-2" max="-2" attributes="0"/>
+                      <Component id="AllTimeAvgErrors" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -329,7 +329,7 @@
                 <Property name="text" type="java.lang.String" value="All Time Avg Errors"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="wordsPerMinLabel2">
+            <Component class="javax.swing.JLabel" name="AllTimeAvgErrors">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="48" style="0"/>
@@ -362,7 +362,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="wordsPerMinLabel3" alignment="0" max="32767" attributes="0"/>
+                          <Component id="AllTimeFastest" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="allTimeAvgLabel3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="33" max="32767" attributes="0"/>
@@ -378,7 +378,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="allTimeAvgLabel3" min="-2" pref="33" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="wordsPerMinLabel3" min="-2" max="-2" attributes="0"/>
+                      <Component id="AllTimeFastest" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="20" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -396,7 +396,7 @@
                 <Property name="text" type="java.lang.String" value="All Fastest Speed"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="wordsPerMinLabel3">
+            <Component class="javax.swing.JLabel" name="AllTimeFastest">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="48" style="0"/>

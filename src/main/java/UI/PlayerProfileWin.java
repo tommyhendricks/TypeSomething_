@@ -5,16 +5,26 @@
  */
 package UI;
 
+import main.PlayerData;
+
 /**
  *
  * @author Tommy Hendricks
  */
 public class PlayerProfileWin extends javax.swing.JFrame {
+    MainScreenWin mw;
+    PlayerData pd;
+
     /**
      * Creates new form PlayerProfileWin
      */
-    public PlayerProfileWin() {
+    public PlayerProfileWin(MainScreenWin mw) {
+       this.mw = mw;
+       this.pd = new PlayerData();
+       
        initComponents();
+       
+       this.AllTimePrompts.setText(String.valueOf(pd.getAllTimePromptsNum()));
     }
 
     /**
@@ -32,16 +42,16 @@ public class PlayerProfileWin extends javax.swing.JFrame {
         userNameLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         allTimeAvgWpmLabel = new javax.swing.JLabel();
-        allTimeAvgWpmNumberLabel = new javax.swing.JLabel();
+        allTimeAvgWpm = new javax.swing.JLabel();
         TotalPromptsPannel = new javax.swing.JPanel();
         totalPrompts = new javax.swing.JLabel();
-        totalPromptsNumberLabel = new javax.swing.JLabel();
+        AllTimePrompts = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         allTimeAvgLabel2 = new javax.swing.JLabel();
-        wordsPerMinLabel2 = new javax.swing.JLabel();
+        AllTimeAvgErrors = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         allTimeAvgLabel3 = new javax.swing.JLabel();
-        wordsPerMinLabel3 = new javax.swing.JLabel();
+        AllTimeFastest = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jComboBox1 = new javax.swing.JComboBox<>();
         TotalPromptsPannel2 = new javax.swing.JPanel();
@@ -68,9 +78,9 @@ public class PlayerProfileWin extends javax.swing.JFrame {
         allTimeAvgWpmLabel.setForeground(new java.awt.Color(255, 255, 255));
         allTimeAvgWpmLabel.setText("All Time Avg WPM");
 
-        allTimeAvgWpmNumberLabel.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        allTimeAvgWpmNumberLabel.setForeground(new java.awt.Color(255, 255, 255));
-        allTimeAvgWpmNumberLabel.setText("N/A");
+        allTimeAvgWpm.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        allTimeAvgWpm.setForeground(new java.awt.Color(255, 255, 255));
+        allTimeAvgWpm.setText("N/A");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -79,7 +89,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(allTimeAvgWpmNumberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(allTimeAvgWpm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(allTimeAvgWpmLabel)
                         .addGap(0, 20, Short.MAX_VALUE)))
@@ -91,7 +101,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(allTimeAvgWpmLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(allTimeAvgWpmNumberLabel)
+                .addComponent(allTimeAvgWpm)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -102,9 +112,9 @@ public class PlayerProfileWin extends javax.swing.JFrame {
         totalPrompts.setForeground(new java.awt.Color(255, 255, 255));
         totalPrompts.setText("Total Prompts");
 
-        totalPromptsNumberLabel.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        totalPromptsNumberLabel.setForeground(new java.awt.Color(255, 255, 255));
-        totalPromptsNumberLabel.setText("N/A");
+        AllTimePrompts.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        AllTimePrompts.setForeground(new java.awt.Color(255, 255, 255));
+        AllTimePrompts.setText("N/A");
 
         javax.swing.GroupLayout TotalPromptsPannelLayout = new javax.swing.GroupLayout(TotalPromptsPannel);
         TotalPromptsPannel.setLayout(TotalPromptsPannelLayout);
@@ -113,7 +123,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
             .addGroup(TotalPromptsPannelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(TotalPromptsPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(totalPromptsNumberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(AllTimePrompts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(TotalPromptsPannelLayout.createSequentialGroup()
                         .addComponent(totalPrompts, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 59, Short.MAX_VALUE)))
@@ -125,7 +135,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(totalPrompts, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(totalPromptsNumberLabel)
+                .addComponent(AllTimePrompts)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -136,9 +146,9 @@ public class PlayerProfileWin extends javax.swing.JFrame {
         allTimeAvgLabel2.setForeground(new java.awt.Color(255, 255, 255));
         allTimeAvgLabel2.setText("All Time Avg Errors");
 
-        wordsPerMinLabel2.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        wordsPerMinLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        wordsPerMinLabel2.setText("N/A");
+        AllTimeAvgErrors.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        AllTimeAvgErrors.setForeground(new java.awt.Color(255, 255, 255));
+        AllTimeAvgErrors.setText("N/A");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -147,7 +157,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(wordsPerMinLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(AllTimeAvgErrors, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(allTimeAvgLabel2)
                         .addGap(0, 18, Short.MAX_VALUE)))
@@ -159,7 +169,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(allTimeAvgLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(wordsPerMinLabel2)
+                .addComponent(AllTimeAvgErrors)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -170,9 +180,9 @@ public class PlayerProfileWin extends javax.swing.JFrame {
         allTimeAvgLabel3.setForeground(new java.awt.Color(255, 255, 255));
         allTimeAvgLabel3.setText("All Fastest Speed");
 
-        wordsPerMinLabel3.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        wordsPerMinLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        wordsPerMinLabel3.setText("N/A");
+        AllTimeFastest.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        AllTimeFastest.setForeground(new java.awt.Color(255, 255, 255));
+        AllTimeFastest.setText("N/A");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -181,7 +191,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(wordsPerMinLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(AllTimeFastest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(allTimeAvgLabel3)
                         .addGap(0, 33, Short.MAX_VALUE)))
@@ -193,7 +203,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(allTimeAvgLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(wordsPerMinLabel3)
+                .addComponent(AllTimeFastest)
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -330,22 +340,24 @@ public class PlayerProfileWin extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //this.setVisible(false);
-        //mw.setVisible(true);
+        this.setVisible(false);
+        mw.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel AllTimeAvgErrors;
+    private javax.swing.JLabel AllTimeFastest;
+    private javax.swing.JLabel AllTimePrompts;
     private javax.swing.JLabel AvgSpeedLabel;
     private javax.swing.JLabel AvgSpeedPastNthRaces;
     private javax.swing.JPanel TotalPromptsPannel;
-    private javax.swing.JPanel TotalPromptsPannel1;
     private javax.swing.JPanel TotalPromptsPannel2;
     private javax.swing.JLabel allTimeAvgLabel2;
     private javax.swing.JLabel allTimeAvgLabel3;
+    private javax.swing.JLabel allTimeAvgWpm;
     private javax.swing.JLabel allTimeAvgWpmLabel;
-    private javax.swing.JLabel allTimeAvgWpmNumberLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
@@ -356,11 +368,6 @@ public class PlayerProfileWin extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private java.awt.Label label1;
     private javax.swing.JLabel totalPrompts;
-    private javax.swing.JLabel totalPrompts1;
-    private javax.swing.JLabel totalPromptsNumberLabel;
-    private javax.swing.JLabel totalPromptsNumberLabel1;
     private javax.swing.JLabel userNameLabel;
-    private javax.swing.JLabel wordsPerMinLabel2;
-    private javax.swing.JLabel wordsPerMinLabel3;
     // End of variables declaration//GEN-END:variables
 }
