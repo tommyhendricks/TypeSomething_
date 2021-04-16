@@ -24,7 +24,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
        
        initComponents();
        
-       this.AllTimePrompts.setText(String.valueOf(pd.getAllTimePromptsNum()));
+      // this.AllTimePrompts.setText(String.valueOf(pd.getAllTimePromptsNum()));
     }
 
     /**
