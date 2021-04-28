@@ -49,8 +49,7 @@ public class PlayerData {
     public PlayerData(){
         VRpastRaceList = new ArrayList<Integer>();
         AllpastRaceList = new ArrayList<Integer>();
-        
-        
+ 
     }
     
     
@@ -111,6 +110,13 @@ public class PlayerData {
     public void loadProfile(){
         
     }
+    
+    
+    public boolean doesProfileExist(){
+        
+        return true;
+    }
+    
     
     public int getAllTimePromptsNum(){return this.allTimePrompts;}
     

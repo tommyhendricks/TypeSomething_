@@ -20,10 +20,12 @@ public class TypeSomethingVinillaRace{
     private String prompt;
     private Letter letter;
     private ArrayList<Letter> letterList;
+    private ArrayList<Character> badLetters;
     
     private StringBuilder normalLetters;
     private StringBuilder correctLetters;
     private StringBuilder incorrectLetters;
+    private StringBuilder tempPrompt;
     
     private int currentLetter;
     private int currentWrong;
@@ -50,10 +52,33 @@ public class TypeSomethingVinillaRace{
         
         pd = new PlayerData();
         
+        normalLetters = new StringBuilder();
+        correctLetters = new StringBuilder();
+        incorrectLetters = new StringBuilder();
+        tempPrompt = new StringBuilder();
+        
+        badLetters = new ArrayList<Character>();
+        badLetters.add('[');
+        badLetters.add(']');
+        badLetters.add('{');
+        badLetters.add('}');
+        badLetters.add('(');
+        badLetters.add(')');
+        badLetters.add('\\');
+        badLetters.add('/');
+        badLetters.add('|');
+        badLetters.add('>');
+        badLetters.add('<');
+        badLetters.add('"');
+        badLetters.add('â');
+        badLetters.add('€');
+        badLetters.add('™');
+        
         //Make the LetterList and create it
         letterList = new ArrayList<Letter>();
         this.prompt = prompt;
         createLetterList(prompt);
+        this.setNormalLetters(tempPrompt.toString());
         
         promptFinished = false;
         isWrong = false;
@@ -70,10 +95,6 @@ public class TypeSomethingVinillaRace{
         elapsedTime = 0;
         totalTime = 0;
        
-        
-        normalLetters = new StringBuilder();
-        correctLetters = new StringBuilder();
-        incorrectLetters = new StringBuilder();
     }
     
     /**
@@ -85,8 +106,11 @@ public class TypeSomethingVinillaRace{
         letterList.clear();
         
         for(int i=0; i<prompt.length(); i++){
-            letter = new Letter(prompt.charAt(i));
-            letterList.add(letter);
+            if(!badLetters.contains(prompt.charAt(i))){
+                letter = new Letter(prompt.charAt(i));
+                letterList.add(letter);
+                tempPrompt.append(prompt.charAt(i));
+            }
         } 
      }
      
@@ -134,7 +158,7 @@ public class TypeSomethingVinillaRace{
                }
             }
             //If prompt if finished
-            if(currentLetter == this.prompt.length() && !this.isWrong){
+            if(currentLetter == this.tempPrompt.length() && !this.isWrong){
                 this.promptFinished = true;
                 if (this.currentLetter % 5 >3) {
                     this.updateTypingSpeed();
@@ -199,20 +223,6 @@ public class TypeSomethingVinillaRace{
     } 
     
     /**
-     * This will give you a new prompt
-     * @param prompt 
-     */
-    private void newLetterList(String prompt){
-        letterList.clear();
-        
-        for(int i=0; i<prompt.length(); i++){
-            letter = new Letter(prompt.charAt(i));
-            letterList.add(letter);
-        }
-        
-    }
-    
-    /**
     * When the race is finished this will be called and set the information
     * on the AfterRaceWin that will be displayed. 
     */
@@ -238,7 +248,9 @@ public class TypeSomethingVinillaRace{
      */ 
     public void resetRace(String prompt){
         
-        this.prompt = prompt;
+        tempPrompt.delete(0, this.currentLetter);
+        this.createLetterList(prompt);
+        this.prompt = tempPrompt.toString();
         this.promptFinished = false;
         this.isWrong = false;
         
@@ -261,7 +273,7 @@ public class TypeSomethingVinillaRace{
         this.typingSpeed = 0;
         this.totalErrors = 0;
         
-        this.newLetterList(prompt);
+        
         
     }
     

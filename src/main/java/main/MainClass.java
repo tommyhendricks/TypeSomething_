@@ -40,10 +40,16 @@ public class MainClass {
             java.util.logging.Logger.getLogger(MainClass.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
+        
+        
         MainScreenWin msw = new MainScreenWin();
-        msw.setVisible(true);
         msw.setTitle("Type Something_");
         msw.setLocationRelativeTo(null);
+        
+        UI.LoginWin lw = new UI.LoginWin(msw);
+        lw.setVisible(true);
+        lw.setTitle("Type Something Login");
+        
 //        UI.AfterRaceWin a = new UI.AfterRaceWin();
 //        a.setVisible(true);
 //        a.setLocationRelativeTo(null);

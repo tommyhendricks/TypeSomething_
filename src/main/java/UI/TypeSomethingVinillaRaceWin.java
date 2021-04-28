@@ -63,7 +63,6 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
         //Gets and send the prompot to the raceData class and t
         this.prompt = pg.getPrompt();
         raceData = new main.TypeSomethingVinillaRace(this.prompt);
-        raceData.setNormalLetters(this.prompt);
         
         initComponents();
         
@@ -72,7 +71,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
         StyleConstants.setItalic(attributeSet, true);
         this.panePromptArea.setCharacterAttributes(attributeSet, true);
                 
-        Font font = new Font("Arial", Font.PLAIN, 22);
+        Font font = new Font("Arial", Font.PLAIN, 24);
         this.panePromptArea.setFont(font);
         
         this.setPaneAreaPrompt();
@@ -82,6 +81,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
         timer.start(); 
         
         this.paneUserInputArea.setEditable(false);
+        this.NextRace.setEnabled(false);
         //this.paneUserInputArea.requestFocus();
     }
     
@@ -115,15 +115,18 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
     public void actionPerformed(ActionEvent e) {
         if(this.loop == 4)
             this.startLight.setIcon(new ImageIcon(getClass().getResource("/RedLight.png")));
-        else if (this.loop == 3)
+        else if (this.loop == 2)
             this.startLight.setIcon(new ImageIcon(getClass().getResource("/YellowLight.png")));
-        else if(this.loop == 1){
+        else if(this.loop == 0){
             this.startLight.setIcon(new ImageIcon(getClass().getResource("/GreenLight.png")));
-            timer.stop();
             this.startRace = true;
             this.paneUserInputArea.setEditable(true);
             this.paneUserInputArea.requestFocus();
+            timer.stop();
         }
+        if(this.loop == 0)
+            this.TimeLeftTillRace.setText("10");
+        this.TimeLeftTillRace.setText(String.valueOf(loop));
         loop--;
     }
     
@@ -136,6 +139,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
         jPanel1 = new javax.swing.JPanel();
         NextRace = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -145,8 +149,20 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         panePromptArea = new javax.swing.JTextPane();
-        TypeSpeed = new javax.swing.JLabel();
+        TimeLeftTillRace = new javax.swing.JLabel();
         startLight = new javax.swing.JLabel();
+        TypeSpeed = new javax.swing.JLabel();
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -161,8 +177,9 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
         paneUserInputArea.setEditable(false);
         paneUserInputArea.setBackground(new java.awt.Color(0, 0, 0));
         paneUserInputArea.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        paneUserInputArea.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        paneUserInputArea.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         paneUserInputArea.setForeground(new java.awt.Color(255, 255, 255));
+        paneUserInputArea.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         paneUserInputArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 paneUserInputAreaKeyPressed(evt);
@@ -208,59 +225,68 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 712, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
+
+        TimeLeftTillRace.setBackground(new java.awt.Color(0, 0, 0));
+        TimeLeftTillRace.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        TimeLeftTillRace.setForeground(new java.awt.Color(255, 255, 255));
+        TimeLeftTillRace.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        TimeLeftTillRace.setText("0");
+        TimeLeftTillRace.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        startLight.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        startLight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/RedLight.png"))); // NOI18N
 
         TypeSpeed.setBackground(new java.awt.Color(0, 0, 0));
         TypeSpeed.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         TypeSpeed.setForeground(new java.awt.Color(255, 255, 255));
         TypeSpeed.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        TypeSpeed.setText("0");
+        TypeSpeed.setText("0WPM");
         TypeSpeed.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        startLight.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        startLight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/RedLight.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(26, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(MainMenu)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(NextRace))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
-                                .addComponent(correctColorShowerPannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(startLight, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(101, 101, 101)
-                                .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addGap(0, 30, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(MainMenu)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(NextRace))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
+                            .addComponent(correctColorShowerPannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(TimeLeftTillRace, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(213, 213, 213))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(startLight, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(123, 123, 123)))
+                            .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(startLight, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TimeLeftTillRace)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(correctColorShowerPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -294,9 +320,11 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
     private void NextRaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextRaceActionPerformed
         //Call the reset function, Sets normal letters to the correct prompt
         //Sets the prompt area. 
+        pg.getPromptFromAPI();
         this.raceData.resetRace(pg.getPrompt());
         
         raceData.setNormalLetters(raceData.getPrompt());
+        this.TimeLeftTillRace.setText("4");
         this.TypeSpeed.setText("0");
         this.correctColorShowerPannel.setBackground(Color.GRAY);
         this.paneUserInputArea.setText("");
@@ -305,6 +333,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
         
         this.loop = 4;
         this.timer.start();
+        this.NextRace.setEnabled(false);
     }//GEN-LAST:event_NextRaceActionPerformed
 
     private void MainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MainMenuActionPerformed
@@ -340,6 +369,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
         if(raceData.getPromptcompleted()){
             this.startRace = false;
             this.TypeSpeed.setText(String.format("%.0f", raceData.getTypingSpeed()) + " WPM");
+            this.NextRace.setEnabled(true);
         }
         
     }//GEN-LAST:event_paneUserInputAreaKeyTyped
@@ -356,8 +386,10 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton MainMenu;
     private javax.swing.JButton NextRace;
+    private javax.swing.JLabel TimeLeftTillRace;
     private javax.swing.JLabel TypeSpeed;
     private javax.swing.JPanel correctColorShowerPannel;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
