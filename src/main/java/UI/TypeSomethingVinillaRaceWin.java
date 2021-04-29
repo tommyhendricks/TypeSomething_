@@ -71,7 +71,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
         StyleConstants.setItalic(attributeSet, true);
         this.panePromptArea.setCharacterAttributes(attributeSet, true);
                 
-        Font font = new Font("Arial", Font.PLAIN, 24);
+        Font font = new Font("Arial", Font.BOLD, 26);
         this.panePromptArea.setFont(font);
         
         this.setPaneAreaPrompt();

@@ -215,11 +215,10 @@ public class TypeSomethingVinillaRace{
         this.totalTime += this.elapsedTime;
         this.startTime = this.currentTime;
         
-        
-        this.typingSpeed += 60/this.elapsedTime;
-        this.wpm = this.typingSpeed / totalWords;
-        
-        System.out.println(this.elapsedTime);
+        if(this.elapsedTime >= .1){
+            this.typingSpeed += 60/this.elapsedTime;
+            this.wpm = this.typingSpeed / totalWords;
+        }
     } 
     
     /**
@@ -236,8 +235,8 @@ public class TypeSomethingVinillaRace{
         this.arw.setVisible(true);
         
         //update playerData
-        pd.updateUserRaceData((int)this.wpm, totalErrors);
-        pd.updateVinillaRaceData((int)this.wpm, totalErrors);
+        pd.updateAllTimeRaceData((int)this.wpm, totalErrors);
+        pd.updateVanillaRaceData((int)this.wpm, totalErrors);
 
     }
     

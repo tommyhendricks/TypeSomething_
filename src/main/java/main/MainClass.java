@@ -45,10 +45,7 @@ public class MainClass {
         MainScreenWin msw = new MainScreenWin();
         msw.setTitle("Type Something_");
         msw.setLocationRelativeTo(null);
-        
-        UI.LoginWin lw = new UI.LoginWin(msw);
-        lw.setVisible(true);
-        lw.setTitle("Type Something Login");
+        msw.setVisible(true);
         
 //        UI.AfterRaceWin a = new UI.AfterRaceWin();
 //        a.setVisible(true);

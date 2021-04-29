@@ -37,8 +37,7 @@ public class PromptGetter {
                 String inputLine;        
                 StringBuilder sb = new StringBuilder();        
 
-                while ((inputLine = in.readLine()) != null){            
-                    System.out.println(inputLine);            
+                while ((inputLine = in.readLine()) != null){                        
                     sb.append(inputLine);            
                     sb.append("\n");        }        
                 in.close();        
@@ -55,7 +54,7 @@ public class PromptGetter {
                 // TODO: Produce useful error messages for the user
                 e.printStackTrace();
             }
-        }while(!(this.stringToReturn.length() < 200));
+        }while(!(this.stringToReturn.length() < 300));
     }
     
     public String getPrompt(){
