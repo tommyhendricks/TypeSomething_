@@ -47,6 +47,7 @@ public class MainClass {
         msw.setLocationRelativeTo(null);
         msw.setVisible(true);
         
+        
 //        UI.AfterRaceWin a = new UI.AfterRaceWin();
 //        a.setVisible(true);
 //        a.setLocationRelativeTo(null);

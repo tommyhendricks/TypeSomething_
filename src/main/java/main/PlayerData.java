@@ -5,13 +5,26 @@
  */
 package main;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
- *
+ * This will hold all of the information about the player. This includes all of
+ * the stats about the player. 
  * @author Tommy Hendricks
  */
-public class PlayerData {
+public class PlayerData implements Serializable{
+    
+    private static String userName;
+    private static PlayerData instance;
     
     //All time player stats:
     private static int allTimePrompts;
@@ -70,6 +83,7 @@ public class PlayerData {
     
     
     public PlayerData(){
+        userName = "Guest";
         vrPastRaceListWPM = new ArrayList<Integer>();
         vrPastRaceListErrors = new ArrayList<Integer>();
         idPastRaceListWPM = new ArrayList<Integer>();
@@ -79,7 +93,7 @@ public class PlayerData {
         allpastRaceList = new ArrayList<Integer>();
         
     }
-    
+
     /**
      * This should be called at the end of every prompt completed.
      * This will take in the WPM for that prompt and the Errors and update
@@ -87,29 +101,28 @@ public class PlayerData {
      * @param lrWPM last race words per minute
      * @param lrErrors last race amount of errors
      */
-    public void updateAllTimeRaceData(int lrWPM, int lrErrors){
+    public static void updateAllTimeRaceData(int lrWPM, int lrErrors){
         
         //All Time stats:
         //Adds one to the total prompts completed 
-        this.allTimePrompts++;
-        System.out.println(this.allTimePrompts);
+        allTimePrompts++;
         //Check to see if this one is the new fastest race
-        if(this.allTimeTopWpm < lrWPM)
-            this.allTimeTopWpm = lrWPM;
+        if(allTimeTopWpm < lrWPM)
+            allTimeTopWpm = lrWPM;
         
         //Update the all time average typing speed
-        this.allTimeAvgWpmNum += lrWPM;
-        this.allTimeAvgWpm = this.allTimeAvgWpmNum / this.allTimePrompts;
+        allTimeAvgWpmNum += lrWPM;
+        allTimeAvgWpm = allTimeAvgWpmNum / allTimePrompts;
         
         //Update the all time average errors
-        this.allTimeAvgErrorNum += lrErrors;
-        this.allTimeAvgError = this.allTimeAvgErrorNum / this.allTimePrompts;
+        allTimeAvgErrorNum += lrErrors;
+        allTimeAvgError = allTimeAvgErrorNum / allTimePrompts;
         
         //This will add the race to the end of the last 15 races list. 
-        if(this.allpastRaceList.size() > 10)
-            this.allpastRaceList.remove(0);
+        if(allpastRaceList.size() > 10)
+            allpastRaceList.remove(0);
         
-        this.allpastRaceList.add(lrWPM);
+        allpastRaceList.add(lrWPM);
         
         
     }
@@ -119,29 +132,30 @@ public class PlayerData {
      * @param vrWPM
      * @param vrErrors 
      */
-    public void updateVanillaRaceData(int vrWPM, int vrErrors){
+    public static void updateVanillaRaceData(int vrWPM, int vrErrors){
         //Add to total prompts
-        this.vrAllTimePrompts++;
+        vrAllTimePrompts++;
         
         //Check to see if this is the new fastest
-        if(this.vrAllFastestWPM < vrWPM)
-            this.vrAllFastestWPM = vrWPM;
+        if(vrAllFastestWPM < vrWPM)
+            vrAllFastestWPM = vrWPM;
         
         //Add to the list of the last 10 races WPM edition
-        if(this.vrPastRaceListWPM.size() > 10)
-            this.vrPastRaceListWPM.remove(0);
-        this.vrPastRaceListWPM.add(vrWPM);
+        if(vrPastRaceListWPM.size() > 10)
+            vrPastRaceListWPM.remove(0);
+        vrPastRaceListWPM.add(vrWPM);
         
         // Find the avg wpm of the last 10 or < races
         vrAvgWpmNum = 0;
         for(int vr: vrPastRaceListWPM)
             vrAvgWpmNum += vr;
+            
         vrAvgWpm = vrAvgWpmNum / vrPastRaceListWPM.size();
         
         //Add to the list of the last 10 races Errors edition
-        if(this.vrPastRaceListErrors.size() > 10)
-            this.vrPastRaceListErrors.remove(0);
-        this.vrPastRaceListErrors.add(vrErrors);
+        if(vrPastRaceListErrors.size() > 10)
+            vrPastRaceListErrors.remove(0);
+        vrPastRaceListErrors.add(vrErrors);
         
         // Find the avg Erros of the last 10 or < races
         vrAvgErrorsNum = 0;
@@ -156,7 +170,7 @@ public class PlayerData {
      * @param vrWPM
      * @param vrErrors 
      */
-    public void updateInstantDeathRaceData(int vrWPM, int vrErrors){
+    public static void updateInstantDeathRaceData(int vrWPM, int vrErrors){
         //Add to total prompts
         idAllTimePrompts++;
         
@@ -193,7 +207,7 @@ public class PlayerData {
      * @param vrWPM
      * @param vrErrors 
      */
-    public void updateCheckpointRaceData(int vrWPM, int vrErrors){
+    public static void updateCheckpointRaceData(int vrWPM, int vrErrors){
         //Add to total prompts
         cpAllTimePrompts++;
         
@@ -226,14 +240,6 @@ public class PlayerData {
     }
     
     
-    public void saveProfile(){
-        
-    }
-    
-    public void loadProfile(){
-        
-    }
-    
     //Getters for all time race stuff
     public static int getAllTimePrompts() {return allTimePrompts;}
     public static int getAllTimeTopWpm() {return allTimeTopWpm;}
@@ -261,6 +267,8 @@ public class PlayerData {
     public static int getCpAvgWpm() {return cpAvgWpm;}
     public static int getCpAvgErrors() {return cpAvgErrors;}
     //__________________________________________________________________________
+
+    public static void setAllTimePrompts(int allTimePrompts) {PlayerData.allTimePrompts = allTimePrompts;}
    
     
 }

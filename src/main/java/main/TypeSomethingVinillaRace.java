@@ -50,7 +50,6 @@ public class TypeSomethingVinillaRace{
         arw.setLocationRelativeTo(null);
         arw.setTitle("Race Stats");
         
-        pd = new PlayerData();
         
         normalLetters = new StringBuilder();
         correctLetters = new StringBuilder();
@@ -66,6 +65,9 @@ public class TypeSomethingVinillaRace{
         badLetters.add(')');
         badLetters.add('\\');
         badLetters.add('/');
+        badLetters.add('�');
+        badLetters.add('œ');
+        badLetters.add('Ã');
         badLetters.add('|');
         badLetters.add('>');
         badLetters.add('<');
@@ -235,8 +237,8 @@ public class TypeSomethingVinillaRace{
         this.arw.setVisible(true);
         
         //update playerData
-        pd.updateAllTimeRaceData((int)this.wpm, totalErrors);
-        pd.updateVanillaRaceData((int)this.wpm, totalErrors);
+        PlayerData.updateAllTimeRaceData((int)this.wpm, totalErrors);
+        PlayerData.updateVanillaRaceData((int)this.wpm, totalErrors);
 
     }
     
