@@ -14,6 +14,9 @@ import java.awt.Color;
  */
 public class Letter {
     private char letter;
+    private boolean typed = false;
+    private boolean correct = false;
+    
     
     public Letter(char letter){
         this.letter = letter;
@@ -21,7 +24,10 @@ public class Letter {
     
     public Letter(){}
      
-    public char getLetter(){return this.letter;}
-
+    public char getLetter(){return letter;}
+    public boolean getCorrect(){return correct;}
+    public boolean getTyped(){return typed;}
     
+    public void setTyped(boolean typed){this.typed = typed;}
+    public void setCorrect(boolean correct){this.correct = correct;}
 }

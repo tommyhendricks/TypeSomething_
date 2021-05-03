@@ -20,13 +20,13 @@ import java.net.URLConnection;
  * @author Tommy Hendricks
  */
 public class PromptGetter {
-    private String stringToReturn;
+    private static String stringToReturn;
 
     public PromptGetter(){
         this.getPromptFromAPI();
     }
     
-    public void getPromptFromAPI(){
+    private static void getPromptFromAPI(){
         do{
             try{ 
                 URL oracle = new URL("https://opinionated-quotes-api.gigalixirapp.com/v1/quotes?rand=t&author?rand=t&tmode?rand=t");        
@@ -48,19 +48,18 @@ public class PromptGetter {
                 JsonArray jarray = jobject.getAsJsonArray("quotes");
                 JsonElement firstIndex = jarray.get(0);
                 jobject = firstIndex.getAsJsonObject();
-                this.stringToReturn = jobject.get("quote").toString();
+                stringToReturn = jobject.get("quote").toString();
                 }
             catch(Exception e){
                 // TODO: Produce useful error messages for the user
                 e.printStackTrace();
             }
-        }while(!(this.stringToReturn.length() < 300));
+        }while(!(stringToReturn.length() < 300));
     }
     
-    public String getPrompt(){
-        //return "This is the test prompt I hope that you like it. This is the second sentence. This is the third one.";
-        //return "the short test one";
-        return this.stringToReturn;
+    public static String getPrompt(){
+        getPromptFromAPI();
+        return stringToReturn;
     }
     
     

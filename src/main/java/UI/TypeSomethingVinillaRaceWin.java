@@ -6,25 +6,16 @@
 package UI;
 
 import com.sun.glass.events.KeyEvent;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import javax.swing.Timer;
-import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
-import main.Letter;
 import main.PromptGetter;
 
 /**
@@ -43,9 +34,11 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
     private int speed;
     private int loop;
     
-    main.PromptGetter pg;
-    main.TypeSomethingVinillaRace raceData;
-    UI.MainScreenWin msw;
+    private main.PromptGetter pg;
+    private main.TypeSomethingVinillaRace raceData;
+    private main.PlayerData pd;
+    private MainScreenWin msw;
+    
     /**
      * Creates new form TypeSomethingVinillaRaceWin
      */
@@ -122,6 +115,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
             this.startRace = true;
             this.paneUserInputArea.setEditable(true);
             this.paneUserInputArea.requestFocus();
+            raceData.startTimer();
             timer.stop();
         }
         if(this.loop == 0)
@@ -163,6 +157,9 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
         );
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -225,11 +222,11 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 712, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
         );
 
         TimeLeftTillRace.setBackground(new java.awt.Color(0, 0, 0));
@@ -256,7 +253,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(0, 30, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
@@ -274,7 +271,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
                                     .addComponent(startLight, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(123, 123, 123)))
                             .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addGap(44, 44, 44))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,12 +279,11 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(TypeSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(startLight, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TimeLeftTillRace)))
+                    .addComponent(startLight, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(TimeLeftTillRace)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(correctColorShowerPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -303,11 +299,11 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -320,8 +316,8 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
     private void NextRaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextRaceActionPerformed
         //Call the reset function, Sets normal letters to the correct prompt
         //Sets the prompt area. 
-        pg.getPromptFromAPI();
-        this.raceData.resetRace(pg.getPrompt());
+        
+        this.raceData.resetRace();
         
         raceData.setNormalLetters(raceData.getPrompt());
         this.TimeLeftTillRace.setText("4");
@@ -359,6 +355,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
                 this.raceData.checkCorrect(evt.getKeyChar()); 
             }
             this.setPaneAreaPrompt();    
+            this.paneUserInputArea.setText(" ");
             this.paneUserInputArea.setText(raceData.getDisplayString());
 
             if(!raceData.getIsWrong())

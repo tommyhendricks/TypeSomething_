@@ -5,6 +5,9 @@
  */
 package UI;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 /**
  *
  * @author Tommy Hendricks
@@ -12,6 +15,7 @@ package UI;
 public class MainScreenWin extends javax.swing.JFrame {
     private UI.PlayerProfileWin ppw;
     private UI.TypeSomethingVinillaRaceWin vr;
+    private UI.TypeSomethingInstantDeathWin id;
     /**
      * Creates new form MainScreenWin
      */
@@ -20,6 +24,14 @@ public class MainScreenWin extends javax.swing.JFrame {
         ppw.setVisible(false);
         ppw.setTitle("User Profile_");
         ppw.setLocationRelativeTo(null);
+        
+        ppw.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowActivated(WindowEvent we) {
+                ppw.updateAllData();
+            }        
+        });
+        
         
         initComponents();
     }
@@ -39,12 +51,7 @@ public class MainScreenWin extends javax.swing.JFrame {
         TypeSomethingTitleLabel = new javax.swing.JLabel();
         profileButton = new javax.swing.JButton();
         TypeSomethingBasicRace = new javax.swing.JButton();
-        RaceIcon = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        TypeSomethingCheckpoint = new javax.swing.JButton();
         TypeSomethingInstantDeath = new javax.swing.JButton();
-        RaceIcon1 = new javax.swing.JLabel();
-        RaceIcon2 = new javax.swing.JLabel();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -81,21 +88,6 @@ public class MainScreenWin extends javax.swing.JFrame {
             }
         });
 
-        RaceIcon.setText("Race Icon");
-
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/stats.png"))); // NOI18N
-
-        TypeSomethingCheckpoint.setBackground(new java.awt.Color(153, 153, 153));
-        TypeSomethingCheckpoint.setFont(new java.awt.Font("Yu Gothic", 1, 18)); // NOI18N
-        TypeSomethingCheckpoint.setText("Checkpoint");
-        TypeSomethingCheckpoint.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
-        TypeSomethingCheckpoint.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TypeSomethingCheckpointActionPerformed(evt);
-            }
-        });
-
         TypeSomethingInstantDeath.setBackground(new java.awt.Color(153, 153, 153));
         TypeSomethingInstantDeath.setFont(new java.awt.Font("Yu Gothic", 1, 18)); // NOI18N
         TypeSomethingInstantDeath.setText("Instant Death");
@@ -105,10 +97,6 @@ public class MainScreenWin extends javax.swing.JFrame {
                 TypeSomethingInstantDeathActionPerformed(evt);
             }
         });
-
-        RaceIcon1.setText("Race Icon");
-
-        RaceIcon2.setText("Race Icon");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -121,26 +109,14 @@ public class MainScreenWin extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(277, 277, 277)
-                        .addComponent(RaceIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(353, 353, 353)
                         .addComponent(TypeSomethingBasicRace, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(RaceIcon2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(TypeSomethingCheckpoint, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(profileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(RaceIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(TypeSomethingInstantDeath, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(profileButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TypeSomethingInstantDeath, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(346, 346, 346))
         );
         jPanel1Layout.setVerticalGroup(
@@ -148,21 +124,11 @@ public class MainScreenWin extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(TypeSomethingTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(RaceIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TypeSomethingBasicRace, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE))
+                .addComponent(TypeSomethingBasicRace, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TypeSomethingInstantDeath, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(RaceIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TypeSomethingCheckpoint, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(RaceIcon2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(profileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(TypeSomethingInstantDeath, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                .addComponent(profileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
         );
 
@@ -193,24 +159,19 @@ public class MainScreenWin extends javax.swing.JFrame {
         ppw.setVisible(true);
     }//GEN-LAST:event_profileButtonActionPerformed
 
-    private void TypeSomethingCheckpointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TypeSomethingCheckpointActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TypeSomethingCheckpointActionPerformed
-
     private void TypeSomethingInstantDeathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TypeSomethingInstantDeathActionPerformed
-        // TODO add your handling code here:
+        id = new TypeSomethingInstantDeathWin(this);
+        id.setLocationRelativeTo(null);
+        id.setTitle("TypeSomething_Instant Death");
+        this.setVisible(false);
+        id.setVisible(true);
     }//GEN-LAST:event_TypeSomethingInstantDeathActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel RaceIcon;
-    private javax.swing.JLabel RaceIcon1;
-    private javax.swing.JLabel RaceIcon2;
     private javax.swing.JButton TypeSomethingBasicRace;
-    private javax.swing.JButton TypeSomethingCheckpoint;
     private javax.swing.JButton TypeSomethingInstantDeath;
     private javax.swing.JLabel TypeSomethingTitleLabel;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;

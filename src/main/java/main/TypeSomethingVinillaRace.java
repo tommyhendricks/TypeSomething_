@@ -5,7 +5,11 @@
  */
 package main;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 /**
@@ -18,13 +22,13 @@ public class TypeSomethingVinillaRace{
     private boolean promptFinished;
     private boolean isWrong;
     private String prompt;
-    private Letter letter;
     private ArrayList<Letter> letterList;
     private ArrayList<Character> badLetters;
     
     private StringBuilder normalLetters;
     private StringBuilder correctLetters;
     private StringBuilder incorrectLetters;
+    private StringBuilder currentLetterToDisplay;
     private StringBuilder tempPrompt;
     
     private int currentLetter;
@@ -43,17 +47,20 @@ public class TypeSomethingVinillaRace{
     
     private UI.AfterRaceWin arw;
     private PlayerData pd;
+    private JFileChooser chooser;
 
     public TypeSomethingVinillaRace(String prompt) {
         //After Race window stuff
         arw = new UI.AfterRaceWin();
         arw.setLocationRelativeTo(null);
         arw.setTitle("Race Stats");
-        
+        pd = PlayerData.getInstance();
+        chooser = new JFileChooser();
         
         normalLetters = new StringBuilder();
         correctLetters = new StringBuilder();
         incorrectLetters = new StringBuilder();
+        currentLetterToDisplay = new StringBuilder();
         tempPrompt = new StringBuilder();
         
         badLetters = new ArrayList<Character>();
@@ -80,7 +87,7 @@ public class TypeSomethingVinillaRace{
         letterList = new ArrayList<Letter>();
         this.prompt = prompt;
         createLetterList(prompt);
-        this.setNormalLetters(tempPrompt.toString());
+        setNormalLetters(tempPrompt.toString());
         
         promptFinished = false;
         isWrong = false;
@@ -109,8 +116,7 @@ public class TypeSomethingVinillaRace{
         
         for(int i=0; i<prompt.length(); i++){
             if(!badLetters.contains(prompt.charAt(i))){
-                letter = new Letter(prompt.charAt(i));
-                letterList.add(letter);
+                letterList.add(new Letter(prompt.charAt(i)));
                 tempPrompt.append(prompt.charAt(i));
             }
         } 
@@ -124,48 +130,44 @@ public class TypeSomethingVinillaRace{
       * @param c User typed letter. 
       */
      public void checkCorrect(char c){
-        //This will get the time right when the first letter in the prompt is typed
-        if(currentLetter == 0){
-            this.startTime = System.nanoTime();
-        }
         //This will check to see if there are more than 6 errors
         //If there are then it wont take anymore input
-        if(this.currentWrong <=5){
+        if(currentWrong <=5){
             //If correct input
-            if(this.letterList.get(this.currentLetter).getLetter() == c && !(isWrong)){
+            if(letterList.get(currentLetter).getLetter() == c && !(isWrong)){
                 if(c != ' '){
-                    this.totalLetterNoWhiteSpace++;
+                    totalLetterNoWhiteSpace++;
                     // update typing speed every 5 none whitespace characters types
                     //(Avg of all words)
-                    if(totalLetterNoWhiteSpace %5 == 0 && !this.isWrong){
-                        this.updateTypingSpeed();
+                    if(totalLetterNoWhiteSpace %5 == 0 && !isWrong){
+                        updateTypingSpeed();
                         totalWords++;
                         }
                 }
-                this.correctLetters.append(c);
-                this.normalLetters.deleteCharAt(0);
-                this.currentLetter++;
-                this.totalLetter++;
-                this.isWrong = false;
+                correctLetters.append(c);
+                normalLetters.deleteCharAt(0);
+                currentLetter++;
+                totalLetter++;
+                isWrong = false;
             }
             //If incorrect input
-            else if(this.letterList.get(currentLetter).getLetter() != c || isWrong){
-                this.incorrectLetters.append(this.normalLetters.charAt(0));
-                this.normalLetters.deleteCharAt(0);
+            else if(letterList.get(currentLetter).getLetter() != c || isWrong){
+                incorrectLetters.append(normalLetters.charAt(0));
+                normalLetters.deleteCharAt(0);
                 currentLetter++;
                 currentWrong++;
                 isWrong = true;
-               if(this.currentWrong == 1){
+               if(currentWrong == 1){
                    totalErrors++;
                }
             }
             //If prompt if finished
-            if(currentLetter == this.tempPrompt.length() && !this.isWrong){
+            if(currentLetter == this.tempPrompt.length() && !isWrong){
                 this.promptFinished = true;
-                if (this.currentLetter % 5 >3) {
-                    this.updateTypingSpeed();
+                if (currentLetter % 5 >3) {
+                    updateTypingSpeed();
                 }
-                this.raceFinished();
+                raceFinished();
            }
         }
      }
@@ -176,10 +178,10 @@ public class TypeSomethingVinillaRace{
       */
      public void backSpace(){
         if(isWrong){
-            this.normalLetters.insert(0, this.letterList.get(currentLetter-1).getLetter());
-            this.incorrectLetters.deleteCharAt(this.incorrectLetters.length()-1);
+            normalLetters.insert(0, letterList.get(currentLetter-1).getLetter());
+            incorrectLetters.deleteCharAt(incorrectLetters.length()-1);
 
-            if(this.incorrectLetters.length() == 0){
+            if(incorrectLetters.length() == 0){
                 isWrong = false;
             }
             currentLetter--;
@@ -196,7 +198,7 @@ public class TypeSomethingVinillaRace{
         try{
             int i = this.correctLetters.lastIndexOf(" ");
             if(i == -1)
-           return this.correctLetters.toString();
+                return this.correctLetters.toString();
         else
            return this.correctLetters.substring(this.correctLetters.lastIndexOf(" ")+1, this.correctLetters.length()-1);
         }
@@ -204,6 +206,13 @@ public class TypeSomethingVinillaRace{
             return "";
         }
     }
+    
+    /**
+     * This will start the timer that is used to find the wpm
+     */
+    public void startTimer(){
+        this.startTime = System.nanoTime();
+    } 
      
     /**
      * This will be called after every 5 characters that are 
@@ -237,9 +246,8 @@ public class TypeSomethingVinillaRace{
         this.arw.setVisible(true);
         
         //update playerData
-        PlayerData.updateAllTimeRaceData((int)this.wpm, totalErrors);
-        PlayerData.updateVanillaRaceData((int)this.wpm, totalErrors);
-
+        pd.updateAllTimeRaceData((int)this.wpm, totalErrors);
+        pd.updateVanillaRaceData((int)this.wpm, totalErrors);
     }
     
     /**
@@ -247,10 +255,10 @@ public class TypeSomethingVinillaRace{
      * to its start values and some other variables that need to be reset too.
      * @param prompt The new prompt that you want to give raceData
      */ 
-    public void resetRace(String prompt){
+    public void resetRace(){
         
         tempPrompt.delete(0, this.currentLetter);
-        this.createLetterList(prompt);
+        this.createLetterList(PromptGetter.getPrompt());
         this.prompt = tempPrompt.toString();
         this.promptFinished = false;
         this.isWrong = false;
@@ -273,8 +281,6 @@ public class TypeSomethingVinillaRace{
         this.wpm = 0;
         this.typingSpeed = 0;
         this.totalErrors = 0;
-        
-        
         
     }
     

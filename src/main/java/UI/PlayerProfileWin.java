@@ -5,10 +5,14 @@
  */
 package UI;
 
+import com.google.gson.Gson;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import main.PlayerData;
 
 /**
@@ -24,38 +29,45 @@ import main.PlayerData;
  * @author Tommy Hendricks
  */
 public class PlayerProfileWin extends javax.swing.JFrame {
-    MainScreenWin mw;
-
+    private MainScreenWin mw;
+    private PlayerData pd;
+    private JFileChooser chooser;
+    private WindowFocusListener we;
     /**
      * Creates new form PlayerProfileWin
      */
     public PlayerProfileWin(MainScreenWin mw) {
        this.mw = mw;
+       pd = PlayerData.getInstance();
        
        initComponents();
        
+       chooser = new JFileChooser();
+       
     }
+    
+    /**
+     * This will update all of the info in the player profile window
+     * The reason this is public is because it is being used in a window listener
+     * outside of the class.
+     */
+    public void updateAllData(){
+        allTimePrompts.setText(String.valueOf(pd.getAllTimePrompts()));
+        allTimeFastest.setText(String.valueOf(pd.getAllTimeTopWpm()));
+        allTimeAvgErrors.setText(String.valueOf(pd.getAllTimeAvgError()));
+        allTimeAvgWpm.setText(String.valueOf(pd.getAllTimeAvgWpm()));
+        
+        vrTotalPrompts.setText(String.valueOf(pd.getVrAllTimePrompts()));
+        vrAvgWPM.setText(String.valueOf(pd.getVrAvgWpm()));
+        vrAvgErrors.setText(String.valueOf(pd.getVrAvgErrors()));
+        vrFastestWPM.setText(String.valueOf(pd.getVrAllFastestWPM()));
+        
+        idTotalPrompts.setText(String.valueOf(pd.getIdAllTimePrompts()));
+        idAvgWPM.setText(String.valueOf(pd.getIdAvgWpm()));
+        idAvgErrors.setText(String.valueOf(pd.getIdAvgErrors()));
+        idFastestWPM.setText(String.valueOf(pd.getIdAllFastestWPM()));
 
-    private void updateAllData(){
-        allTimePrompts.setText(String.valueOf(PlayerData.getAllTimePrompts()));
-        allTimeFastest.setText(String.valueOf(PlayerData.getAllTimeTopWpm()));
-        allTimeAvgErrors.setText(String.valueOf(PlayerData.getAllTimeAvgError()));
-        allTimeAvgWpm.setText(String.valueOf(PlayerData.getAllTimeAvgWpm()));
-        
-        vrTotalPrompts.setText(String.valueOf(PlayerData.getVrAllTimePrompts()));
-        vrAvgWPM.setText(String.valueOf(PlayerData.getVrAvgWpm()));
-        vrAvgErrors.setText(String.valueOf(PlayerData.getVrAvgErrors()));
-        vrFastestWPM.setText(String.valueOf(PlayerData.getVrAllFastestWPM()));
-        
-        idTotalPrompts.setText(String.valueOf(PlayerData.getIdAllTimePrompts()));
-        idAvgWPM.setText(String.valueOf(PlayerData.getIdAvgWpm()));
-        idAvgErrors.setText(String.valueOf(PlayerData.getIdAvgErrors()));
-        idFastestWPM.setText(String.valueOf(PlayerData.getIdAllFastestWPM()));
-        
-        cpTotalPrompts.setText(String.valueOf(PlayerData.getCpAllTimePrompts()));
-        cpAvgWPM.setText(String.valueOf(PlayerData.getCpAvgWpm()));
-        cpAvgErrors.setText(String.valueOf(PlayerData.getCpAvgErrors()));
-        cpFastestWPM.setText(String.valueOf(PlayerData.getCpAllFastestWPM()));
+        usernameLabel.setText(pd.getUsername());
     }
     
     /**
@@ -70,7 +82,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
         label1 = new java.awt.Label();
         jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
-        userNameLabel = new javax.swing.JLabel();
+        usernameLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         allTimeAvgWpmLabel = new javax.swing.JLabel();
         allTimeAvgWpm = new javax.swing.JLabel();
@@ -85,7 +97,6 @@ public class PlayerProfileWin extends javax.swing.JFrame {
         vrAvgSpeedLabel = new javax.swing.JLabel();
         vrTotalPrompts = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        refreshButton = new javax.swing.JButton();
         vinilaRaceLabel = new javax.swing.JLabel();
         TotalPromptsPannel3 = new javax.swing.JPanel();
         AvgSpeedLabel1 = new javax.swing.JLabel();
@@ -110,23 +121,10 @@ public class PlayerProfileWin extends javax.swing.JFrame {
         TotalPromptsPannel9 = new javax.swing.JPanel();
         AvgSpeedLabel6 = new javax.swing.JLabel();
         idFastestWPM = new javax.swing.JLabel();
-        vinilaRaceLabel2 = new javax.swing.JLabel();
-        TotalPromptsPannel10 = new javax.swing.JPanel();
-        vrAvgSpeedLabel2 = new javax.swing.JLabel();
-        cpTotalPrompts = new javax.swing.JLabel();
-        TotalPromptsPannel11 = new javax.swing.JPanel();
-        AvgSpeedLabel7 = new javax.swing.JLabel();
-        cpAvgWPM = new javax.swing.JLabel();
-        TotalPromptsPannel12 = new javax.swing.JPanel();
-        AvgSpeedLabel8 = new javax.swing.JLabel();
-        cpAvgErrors = new javax.swing.JLabel();
-        TotalPromptsPannel13 = new javax.swing.JPanel();
-        AvgSpeedLabel9 = new javax.swing.JLabel();
-        cpFastestWPM = new javax.swing.JLabel();
-        jSeparator3 = new javax.swing.JSeparator();
         jPanel4 = new javax.swing.JPanel();
         allTimeAvgLabel2 = new javax.swing.JLabel();
         allTimeAvgErrors = new javax.swing.JLabel();
+        changeUsernameButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         saveButton = new javax.swing.JMenuItem();
@@ -140,9 +138,9 @@ public class PlayerProfileWin extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
-        userNameLabel.setFont(new java.awt.Font("Yu Gothic Light", 0, 36)); // NOI18N
-        userNameLabel.setForeground(new java.awt.Color(255, 255, 255));
-        userNameLabel.setText("Username(PH)");
+        usernameLabel.setFont(new java.awt.Font("Yu Gothic Light", 0, 36)); // NOI18N
+        usernameLabel.setForeground(new java.awt.Color(255, 255, 255));
+        usernameLabel.setText("N/A");
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
@@ -243,7 +241,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
                 .addComponent(allTimeAvgLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(allTimeFastest)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         TotalPromptsPannel2.setBackground(new java.awt.Color(0, 0, 0));
@@ -281,18 +279,11 @@ public class PlayerProfileWin extends javax.swing.JFrame {
         );
 
         jButton1.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 11)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
         jButton1.setText("Back");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
-            }
-        });
-
-        refreshButton.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 11)); // NOI18N
-        refreshButton.setText("Refresh");
-        refreshButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshButtonActionPerformed(evt);
             }
         });
 
@@ -356,7 +347,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
                     .addGroup(TotalPromptsPannel4Layout.createSequentialGroup()
                         .addComponent(AvgSpeedLabel2)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(vrAvgErrors, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                    .addComponent(vrAvgErrors, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
                 .addContainerGap())
         );
         TotalPromptsPannel4Layout.setVerticalGroup(
@@ -536,145 +527,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
                 .addComponent(AvgSpeedLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(idFastestWPM)
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
-
-        vinilaRaceLabel2.setFont(new java.awt.Font("Yu Gothic", 0, 36)); // NOI18N
-        vinilaRaceLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        vinilaRaceLabel2.setText("Checkpoint");
-
-        TotalPromptsPannel10.setBackground(new java.awt.Color(0, 0, 0));
-        TotalPromptsPannel10.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
-
-        vrAvgSpeedLabel2.setFont(new java.awt.Font("Yu Gothic Light", 1, 14)); // NOI18N
-        vrAvgSpeedLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        vrAvgSpeedLabel2.setText("Total Prompts");
-
-        cpTotalPrompts.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        cpTotalPrompts.setForeground(new java.awt.Color(255, 255, 255));
-        cpTotalPrompts.setText("N/A");
-
-        javax.swing.GroupLayout TotalPromptsPannel10Layout = new javax.swing.GroupLayout(TotalPromptsPannel10);
-        TotalPromptsPannel10.setLayout(TotalPromptsPannel10Layout);
-        TotalPromptsPannel10Layout.setHorizontalGroup(
-            TotalPromptsPannel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TotalPromptsPannel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(TotalPromptsPannel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cpTotalPrompts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(TotalPromptsPannel10Layout.createSequentialGroup()
-                        .addComponent(vrAvgSpeedLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 57, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        TotalPromptsPannel10Layout.setVerticalGroup(
-            TotalPromptsPannel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TotalPromptsPannel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(vrAvgSpeedLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cpTotalPrompts)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        TotalPromptsPannel11.setBackground(new java.awt.Color(0, 0, 0));
-        TotalPromptsPannel11.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
-
-        AvgSpeedLabel7.setFont(new java.awt.Font("Yu Gothic Light", 1, 14)); // NOI18N
-        AvgSpeedLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        AvgSpeedLabel7.setText("Avg WPM");
-
-        cpAvgWPM.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        cpAvgWPM.setForeground(new java.awt.Color(255, 255, 255));
-        cpAvgWPM.setText("N/A");
-
-        javax.swing.GroupLayout TotalPromptsPannel11Layout = new javax.swing.GroupLayout(TotalPromptsPannel11);
-        TotalPromptsPannel11.setLayout(TotalPromptsPannel11Layout);
-        TotalPromptsPannel11Layout.setHorizontalGroup(
-            TotalPromptsPannel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TotalPromptsPannel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(TotalPromptsPannel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(TotalPromptsPannel11Layout.createSequentialGroup()
-                        .addComponent(AvgSpeedLabel7)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(cpAvgWPM, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        TotalPromptsPannel11Layout.setVerticalGroup(
-            TotalPromptsPannel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TotalPromptsPannel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(AvgSpeedLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cpAvgWPM)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        TotalPromptsPannel12.setBackground(new java.awt.Color(0, 0, 0));
-        TotalPromptsPannel12.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
-
-        AvgSpeedLabel8.setFont(new java.awt.Font("Yu Gothic Light", 1, 14)); // NOI18N
-        AvgSpeedLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        AvgSpeedLabel8.setText("Avg Errors");
-
-        cpAvgErrors.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        cpAvgErrors.setForeground(new java.awt.Color(255, 255, 255));
-        cpAvgErrors.setText("N/A");
-
-        javax.swing.GroupLayout TotalPromptsPannel12Layout = new javax.swing.GroupLayout(TotalPromptsPannel12);
-        TotalPromptsPannel12.setLayout(TotalPromptsPannel12Layout);
-        TotalPromptsPannel12Layout.setHorizontalGroup(
-            TotalPromptsPannel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TotalPromptsPannel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(TotalPromptsPannel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(TotalPromptsPannel12Layout.createSequentialGroup()
-                        .addComponent(AvgSpeedLabel8)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(cpAvgErrors, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        TotalPromptsPannel12Layout.setVerticalGroup(
-            TotalPromptsPannel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TotalPromptsPannel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(AvgSpeedLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cpAvgErrors)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        TotalPromptsPannel13.setBackground(new java.awt.Color(0, 0, 0));
-        TotalPromptsPannel13.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
-
-        AvgSpeedLabel9.setFont(new java.awt.Font("Yu Gothic Light", 1, 14)); // NOI18N
-        AvgSpeedLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        AvgSpeedLabel9.setText("Fastest WPM");
-
-        cpFastestWPM.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        cpFastestWPM.setForeground(new java.awt.Color(255, 255, 255));
-        cpFastestWPM.setText("N/A");
-
-        javax.swing.GroupLayout TotalPromptsPannel13Layout = new javax.swing.GroupLayout(TotalPromptsPannel13);
-        TotalPromptsPannel13.setLayout(TotalPromptsPannel13Layout);
-        TotalPromptsPannel13Layout.setHorizontalGroup(
-            TotalPromptsPannel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TotalPromptsPannel13Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(TotalPromptsPannel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(AvgSpeedLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
-                    .addComponent(cpFastestWPM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        TotalPromptsPannel13Layout.setVerticalGroup(
-            TotalPromptsPannel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TotalPromptsPannel13Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(AvgSpeedLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cpFastestWPM)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(0, 0, 0));
@@ -711,76 +564,72 @@ public class PlayerProfileWin extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
+        changeUsernameButton.setForeground(new java.awt.Color(0, 0, 0));
+        changeUsernameButton.setText("Change Name");
+        changeUsernameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeUsernameButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(userNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(330, 330, 330)
-                                .addComponent(refreshButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(TotalPromptsPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(36, 36, 36)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(44, 44, 44)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(44, 44, 44)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(44, 44, 44)
-                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(changeUsernameButton)
+                                .addGap(203, 203, 203)
+                                .addComponent(jButton1))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 830, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 830, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(448, 448, 448)
+                                .addComponent(TotalPromptsPannel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(TotalPromptsPannel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 830, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 830, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(23, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(vinilaRaceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 409, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(TotalPromptsPannel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(37, 37, 37)
-                                .addComponent(TotalPromptsPannel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TotalPromptsPannel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41)))
-                        .addComponent(TotalPromptsPannel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36))
+                        .addComponent(vinilaRaceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(TotalPromptsPannel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(38, 38, 38)
-                                .addComponent(TotalPromptsPannel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(TotalPromptsPannel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(38, 38, 38)
-                                .addComponent(TotalPromptsPannel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(TotalPromptsPannel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(TotalPromptsPannel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(TotalPromptsPannel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addComponent(TotalPromptsPannel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(51, 51, 51)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(TotalPromptsPannel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TotalPromptsPannel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(TotalPromptsPannel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TotalPromptsPannel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TotalPromptsPannel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(TotalPromptsPannel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(38, 38, 38))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 830, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(vinilaRaceLabel2)
-                            .addComponent(vinilaRaceLabel1))
+                        .addComponent(vinilaRaceLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -791,21 +640,21 @@ public class PlayerProfileWin extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(userNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(usernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(changeUsernameButton))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButton1)
-                                    .addComponent(refreshButton))
-                                .addGap(30, 30, 30)))
+                                .addComponent(jButton1)
+                                .addGap(26, 26, 26)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(TotalPromptsPannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(TotalPromptsPannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(vinilaRaceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -825,19 +674,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
                     .addComponent(TotalPromptsPannel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(TotalPromptsPannel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(TotalPromptsPannel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(31, 31, 31)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(vinilaRaceLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(TotalPromptsPannel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(TotalPromptsPannel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TotalPromptsPannel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TotalPromptsPannel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
@@ -868,21 +705,17 @@ public class PlayerProfileWin extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        updateAllData();
-    }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
@@ -890,50 +723,42 @@ public class PlayerProfileWin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
-//        try {
-//            JFileChooser jfc = new JFileChooser();
-//            int ret = jfc.showOpenDialog(this);
-//            if(ret != JFileChooser.APPROVE_OPTION)
-//                return;
-//            File f = jfc.getSelectedFile();
-//            ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(f));
-//            
-//            
-//            //PlayerData.loadProfile((PlayerData) objIn.readObject());
-//            objIn.close();
-//            
-//            updateAllData();
-//            
-//        } catch (FileNotFoundException ex) {
-//            JOptionPane.showMessageDialog(this, "Invalid file please try again.", "Invalid file", JOptionPane.ERROR_MESSAGE);
-//        } catch (IOException ex) {
-//            Logger.getLogger(PlayerData.class.getName()).log(Level.SEVERE, null, ex);
-//            System.exit(255);
-////        } catch (ClassNotFoundException ex) {
-////            Logger.getLogger(PlayerData.class.getName()).log(Level.SEVERE, null, ex);
-////        }
+        int returnVal = chooser.showOpenDialog(this);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            File f = chooser.getSelectedFile();
+            try {
+                pd.loadPlayerData(f);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Could not load from file \n" + 
+                        f.getPath(), "Load failed", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        updateAllData();
     }//GEN-LAST:event_loadButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-//        try {
-//            JFileChooser jfc = new JFileChooser();
-//            int ret = jfc.showSaveDialog(this);
-//            if(ret != JFileChooser.APPROVE_OPTION)
-//                return;
-//            File f = jfc.getSelectedFile();
-//            ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(f));
-//            
-//            
-//            //objOut.writeObject(PlayerData.getInstance());
-//            objOut.close();
-//            
-//        } catch (FileNotFoundException ex) {
-//            JOptionPane.showMessageDialog(this, "Invalid file please try again.", "Invalid file", JOptionPane.ERROR_MESSAGE);
-//        } catch (IOException ex) {
-//            Logger.getLogger(PlayerData.class.getName()).log(Level.SEVERE, null, ex);
-//            System.exit(255);
-//        } 
+         int returnVal = chooser.showSaveDialog(this);
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+                File f = chooser.getSelectedFile();
+                try {
+                    System.out.println(f);
+                    pd.SavePlayerData(f);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Could not save to file \n" + 
+                            f.getPath(), "Save failed", JOptionPane.ERROR_MESSAGE);
+                }
+            }   
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void changeUsernameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeUsernameButtonActionPerformed
+        String m = JOptionPane.showInputDialog(null, "What would you like to change your username to?", 
+                "Change Username", JOptionPane.INFORMATION_MESSAGE);
+        if(m.length() <= 14)
+            pd.setUsername(m);
+        else    
+            JOptionPane.showMessageDialog(null, "Name must be less than 14 characters");
+        
+    }//GEN-LAST:event_changeUsernameButtonActionPerformed
 
     
 
@@ -944,14 +769,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
     private javax.swing.JLabel AvgSpeedLabel4;
     private javax.swing.JLabel AvgSpeedLabel5;
     private javax.swing.JLabel AvgSpeedLabel6;
-    private javax.swing.JLabel AvgSpeedLabel7;
-    private javax.swing.JLabel AvgSpeedLabel8;
-    private javax.swing.JLabel AvgSpeedLabel9;
     private javax.swing.JPanel TotalPromptsPannel;
-    private javax.swing.JPanel TotalPromptsPannel10;
-    private javax.swing.JPanel TotalPromptsPannel11;
-    private javax.swing.JPanel TotalPromptsPannel12;
-    private javax.swing.JPanel TotalPromptsPannel13;
     private javax.swing.JPanel TotalPromptsPannel2;
     private javax.swing.JPanel TotalPromptsPannel3;
     private javax.swing.JPanel TotalPromptsPannel4;
@@ -967,10 +785,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
     private javax.swing.JLabel allTimeAvgWpmLabel;
     private javax.swing.JLabel allTimeFastest;
     private javax.swing.JLabel allTimePrompts;
-    private javax.swing.JLabel cpAvgErrors;
-    private javax.swing.JLabel cpAvgWPM;
-    private javax.swing.JLabel cpFastestWPM;
-    private javax.swing.JLabel cpTotalPrompts;
+    private javax.swing.JButton changeUsernameButton;
     private javax.swing.JLabel idAvgErrors;
     private javax.swing.JLabel idAvgSpeedLabel1;
     private javax.swing.JLabel idAvgWPM;
@@ -985,20 +800,16 @@ public class PlayerProfileWin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextField jTextField1;
     private java.awt.Label label1;
     private javax.swing.JMenuItem loadButton;
-    private javax.swing.JButton refreshButton;
     private javax.swing.JMenuItem saveButton;
     private javax.swing.JLabel totalPrompts;
-    private javax.swing.JLabel userNameLabel;
+    private javax.swing.JLabel usernameLabel;
     private javax.swing.JLabel vinilaRaceLabel;
     private javax.swing.JLabel vinilaRaceLabel1;
-    private javax.swing.JLabel vinilaRaceLabel2;
     private javax.swing.JLabel vrAvgErrors;
     private javax.swing.JLabel vrAvgSpeedLabel;
-    private javax.swing.JLabel vrAvgSpeedLabel2;
     private javax.swing.JLabel vrAvgWPM;
     private javax.swing.JLabel vrFastestWPM;
     private javax.swing.JLabel vrTotalPrompts;
