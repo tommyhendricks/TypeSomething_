@@ -23,13 +23,13 @@ public class PromptGetter {
     private static String stringToReturn;
 
     public PromptGetter(){
-        this.getPromptFromAPI();
+        stringToReturn = "temp";
     }
     
     private static void getPromptFromAPI(){
         do{
             try{ 
-                URL oracle = new URL("https://opinionated-quotes-api.gigalixirapp.com/v1/quotes?rand=t&author?rand=t&tmode?rand=t");        
+                URL oracle = new URL("https://api.quotable.io/random?minLength=100");        
                 URLConnection yc = oracle.openConnection();        
                 InputStream inStream = yc.getInputStream();        
                 InputStreamReader inStreamReader = new InputStreamReader(inStream);        
@@ -45,10 +45,12 @@ public class PromptGetter {
                 String myJsonData = sb.toString();
                 JsonElement jelement = new JsonParser().parse(myJsonData);
                 JsonObject jobject = jelement.getAsJsonObject();
-                JsonArray jarray = jobject.getAsJsonArray("quotes");
-                JsonElement firstIndex = jarray.get(0);
-                jobject = firstIndex.getAsJsonObject();
-                stringToReturn = jobject.get("quote").toString();
+                stringToReturn = jobject.get("content").toString();
+//              
+//                JsonArray jarray = jobject.getAsJsonArray("quotes");
+//                JsonElement firstIndex = jarray.get(0);
+//                jobject = firstIndex.getAsJsonObject();
+               
                 }
             catch(Exception e){
                 // TODO: Produce useful error messages for the user
@@ -59,6 +61,7 @@ public class PromptGetter {
     
     public static String getPrompt(){
         getPromptFromAPI();
+        //return "This is the test quote. The other api stopped working so now I have to use this";
         return stringToReturn;
     }
     

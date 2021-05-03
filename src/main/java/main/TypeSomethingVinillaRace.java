@@ -22,6 +22,7 @@ public class TypeSomethingVinillaRace{
     private boolean promptFinished;
     private boolean isWrong;
     private String prompt;
+    private Letter letter;
     private ArrayList<Letter> letterList;
     private ArrayList<Character> badLetters;
     
@@ -30,6 +31,7 @@ public class TypeSomethingVinillaRace{
     private StringBuilder incorrectLetters;
     private StringBuilder currentLetterToDisplay;
     private StringBuilder tempPrompt;
+    private StringBuilder userInputDisplay;
     
     private int currentLetter;
     private int currentWrong;
@@ -61,6 +63,7 @@ public class TypeSomethingVinillaRace{
         correctLetters = new StringBuilder();
         incorrectLetters = new StringBuilder();
         currentLetterToDisplay = new StringBuilder();
+        userInputDisplay = new StringBuilder();
         tempPrompt = new StringBuilder();
         
         badLetters = new ArrayList<Character>();
@@ -116,7 +119,8 @@ public class TypeSomethingVinillaRace{
         
         for(int i=0; i<prompt.length(); i++){
             if(!badLetters.contains(prompt.charAt(i))){
-                letterList.add(new Letter(prompt.charAt(i)));
+                letter = new Letter(prompt.charAt(i));
+                letterList.add(letter);
                 tempPrompt.append(prompt.charAt(i));
             }
         } 
@@ -133,6 +137,9 @@ public class TypeSomethingVinillaRace{
         //This will check to see if there are more than 6 errors
         //If there are then it wont take anymore input
         if(currentWrong <=5){
+            currentLetterToDisplay.delete(0, currentLetterToDisplay.length());
+            if(currentLetter+1 < letterList.size())
+                currentLetterToDisplay.append(letterList.get(currentLetter+1).getLetter());
             //If correct input
             if(letterList.get(currentLetter).getLetter() == c && !(isWrong)){
                 if(c != ' '){
@@ -145,15 +152,15 @@ public class TypeSomethingVinillaRace{
                         }
                 }
                 correctLetters.append(c);
-                normalLetters.deleteCharAt(0);
+                //normalLetters.deleteCharAt(0);
                 currentLetter++;
                 totalLetter++;
                 isWrong = false;
             }
             //If incorrect input
             else if(letterList.get(currentLetter).getLetter() != c || isWrong){
-                incorrectLetters.append(normalLetters.charAt(0));
-                normalLetters.deleteCharAt(0);
+                incorrectLetters.append(letterList.get(currentLetter).getLetter());
+                //normalLetters.deleteCharAt(0);
                 currentLetter++;
                 currentWrong++;
                 isWrong = true;
@@ -169,7 +176,12 @@ public class TypeSomethingVinillaRace{
                 }
                 raceFinished();
            }
+            if(currentLetter == 1)
+                normalLetters.deleteCharAt(0);
+            if(normalLetters.length()>0)
+                normalLetters.deleteCharAt(0);
         }
+        
      }
      
      /**
@@ -178,9 +190,11 @@ public class TypeSomethingVinillaRace{
       */
      public void backSpace(){
         if(isWrong){
-            normalLetters.insert(0, letterList.get(currentLetter-1).getLetter());
+            normalLetters.insert(0, letterList.get(currentLetter).getLetter());
             incorrectLetters.deleteCharAt(incorrectLetters.length()-1);
-
+            currentLetterToDisplay.delete(0, currentLetterToDisplay.length());
+            if(currentLetter+1 < letterList.size())
+                currentLetterToDisplay.append(letterList.get(currentLetter-1).getLetter());
             if(incorrectLetters.length() == 0){
                 isWrong = false;
             }
@@ -189,23 +203,6 @@ public class TypeSomethingVinillaRace{
         }
      }
      
-     /**
-      * This will get what should be shown in the players input on the display win
-      * it will display the text since the last space
-      * @return text from string since last space. 
-      */
-     public String getDisplayString() {
-        try{
-            int i = this.correctLetters.lastIndexOf(" ");
-            if(i == -1)
-                return this.correctLetters.toString();
-        else
-           return this.correctLetters.substring(this.correctLetters.lastIndexOf(" ")+1, this.correctLetters.length()-1);
-        }
-        catch(IndexOutOfBoundsException e){
-            return "";
-        }
-    }
     
     /**
      * This will start the timer that is used to find the wpm
@@ -291,9 +288,11 @@ public class TypeSomethingVinillaRace{
     public String getNormalLetters() {return normalLetters.toString();}
     public String getCorrectLetters() {return correctLetters.toString();}
     public String getIncorrectLetters() {return incorrectLetters.toString();}
+    public String getCurrentLetterToDisplay() {return currentLetterToDisplay.toString();}
     public boolean getPromptcompleted() {return this.promptFinished; }
+    public String getDisplayString(){return userInputDisplay.toString();}
+    public char getCurrentLetter(){ return letterList.get(currentLetter-1).getLetter();}
     
-    public String getCurrentLetter() {return String.valueOf(currentLetter);}
     public boolean getIsWrong() {return this.isWrong;}
     public int getCurrentWrong() {return this.currentWrong;}
     

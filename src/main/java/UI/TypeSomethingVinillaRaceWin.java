@@ -95,6 +95,10 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
             StyleConstants.setBackground(style, red);
             doc.insertString(doc.getLength(), raceData.getIncorrectLetters(), style);   
             
+            StyleConstants.setForeground(style, Color.WHITE);
+            StyleConstants.setBackground(style, Color.GRAY);
+            doc.insertString(doc.getLength(), raceData.getCurrentLetterToDisplay(), style);
+            
             StyleConstants.setForeground(style, black);
             StyleConstants.setBackground(style, Color.BLACK);
             doc.insertString(doc.getLength(), raceData.getNormalLetters(), style);
@@ -338,6 +342,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
     }//GEN-LAST:event_MainMenuActionPerformed
 
     private void paneUserInputAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_paneUserInputAreaKeyTyped
+        
         if(!raceData.getPromptcompleted() && this.startRace){
             if(raceData.getCurrentWrong() <= 6 && !raceData.getPromptcompleted())
                 this.paneUserInputArea.setEditable(true);
@@ -346,6 +351,8 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
 
             if(evt.getKeyChar() == KeyEvent.VK_SPACE){
                 this.raceData.checkCorrect(' ');
+                if(raceData.getCurrentLetter() == ' ')
+                    paneUserInputArea.setText("");
                 this.TypeSpeed.setText(String.format("%.0f", raceData.getTypingSpeed()) + " WPM");
             }
             else if(evt.getKeyChar() == KeyEvent.VK_BACKSPACE && raceData.getIsWrong()){
@@ -355,8 +362,8 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
                 this.raceData.checkCorrect(evt.getKeyChar()); 
             }
             this.setPaneAreaPrompt();    
-            this.paneUserInputArea.setText(" ");
-            this.paneUserInputArea.setText(raceData.getDisplayString());
+            //this.paneUserInputArea.setText(" ");
+            //this.paneUserInputArea.setText(raceData.getDisplayString());
 
             if(!raceData.getIsWrong())
                 this.correctColorShowerPannel.setBackground(green);

@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * the stats about the player. 
  * @author Tommy Hendricks
  */
-public class PlayerData{
+public class PlayerData {
     
     private String userName;
     private static PlayerData instance = null;
@@ -80,33 +80,24 @@ public class PlayerData{
         return instance;
     }
     
-    public static void setInstance(PlayerData pd){
-        if(instance == null)
-            instance = new PlayerData();
-        instance = pd;
-    }
-    
     public void SavePlayerData(File f) throws IOException{
         Gson gson = new Gson();
         FileWriter fw = new FileWriter(f);
-        String playerDataJson = gson.toJson(instance);
-        gson.toJson(playerDataJson, fw);
+        //String playerDataJson = gson.toJson(instance);
+        gson.toJson(instance, fw);
         fw.close();
         
     }
     
-    public void loadPlayerData(File f) throws IOException{
-        
-        
-        //String playerDataJson = "{\"userName\":\"Guest\",\"allTimePrompts\":1,\"allTimeTopWpm\":75,\"allTimeAvgWpm\":75,\"allTimeAvgWpmNum\":75,\"allTimeAvgError\":5,\"allTimeAvgErrorNum\":5,\"allpastRaceList\":[75],\"vrAllFastestWPM\":75,\"vrAllTimePrompts\":1,\"vrAvgWpm\":75,\"vrAvgWpmNum\":75,\"vrAvgErrors\":5,\"vrAvgErrorsNum\":5,\"vrPastRaceListWPM\":[75],\"vrPastRaceListErrors\":[5],\"idAllFastestWPM\":0,\"idAllTimePrompts\":0,\"idAvgWpm\":0,\"idAvgWpmNum\":0,\"idAvgErrors\":0,\"idAvgErrorsNum\":0,\"idPastRaceListWPM\":[],\"idPastRaceListErrors\":[],\"cpAllFastestWPM\":0,\"cpAllTimePrompts\":0,\"cpAvgWpm\":0,\"cpAvgWpmNum\":0,\"cpAvgErrors\":0,\"cpAvgErrorsNum\":0,\"cpPastRaceListWPM\":[],\"cpPastRaceListErrors\":[]}";
-        
+    public PlayerData loadPlayerData(File f) throws IOException{
         Gson gson = new Gson();
         FileReader fr = new FileReader(f);
-        String s = gson.fromJson(fr , String.class);
-        PlayerData.setInstance(gson.fromJson(s, PlayerData.class)); 
-        System.out.println(s);
-        System.out.println(instance);
+        PlayerData temp = new PlayerData();
+        temp = gson.fromJson(fr , PlayerData.class);
+        
         fr.close();
+        
+        return temp;
         
     }
     
@@ -239,12 +230,10 @@ public class PlayerData{
     public int getIdAvgWpm() {return idAvgWpm;}
     public int getIdAvgErrors() {return idAvgErrors;}
     //__________________________________________________________________________
-
-    
     public String getUsername(){return userName;}
+    
+    //Setters for Everything
     public void setUsername(String username){this.userName = username;}
-
     public void setAllTimePrompts(int allTimePrompts) {this.allTimePrompts = allTimePrompts;}
-   
     
 }

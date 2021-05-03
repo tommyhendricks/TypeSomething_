@@ -302,14 +302,17 @@ public class TypeSomethingInstantDeathWin extends javax.swing.JFrame implements 
     private void paneUserInputAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_paneUserInputAreaKeyTyped
         if(!raceData.getPromptcompleted() && startRace && !raceData.getIsWrong()){
             if(evt.getKeyChar() == KeyEvent.VK_SPACE){
+                if(raceData.getCurrentLetter() == ' ')
+                    paneUserInputArea.setText("");
                 raceData.checkCorrect(' ');
                 TypeSpeed.setText(String.format("%.0f", raceData.getTypingSpeed()) + " WPM");
             }
             else if(evt.getKeyChar() != KeyEvent.VK_BACKSPACE){
+                
                 raceData.checkCorrect(evt.getKeyChar());
             }
             this.setPaneAreaPrompt();
-            paneUserInputArea.setText(raceData.getDisplayString());
+            
 
             if(!raceData.getIsWrong())
                 correct.setBackground(green);

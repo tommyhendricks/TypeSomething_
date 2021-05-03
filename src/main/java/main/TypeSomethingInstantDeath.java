@@ -163,7 +163,6 @@ public class TypeSomethingInstantDeath {
                     updateTypingSpeed();
                     totalWords++;
                 }
-                System.out.println(totalLetterNoWhiteSpace);
             }
             totalLetter++;
             currentLetter++;
@@ -266,23 +265,6 @@ public class TypeSomethingInstantDeath {
         startTime = System.nanoTime();
     }
     
-    /**
-      * This will get what should be shown in the players input on the display win
-      * it will display the text since the last space
-      * @return text from string since last space. 
-      */
-     public String getDisplayString() {
-        try{
-            int i = this.correctLetters.lastIndexOf(" ");
-            if(i == -1)
-                return this.correctLetters.toString();
-        else
-           return this.correctLetters.substring(this.correctLetters.lastIndexOf(" ")+1, this.correctLetters.length()-1);
-        }
-        catch(IndexOutOfBoundsException e){
-            return "";
-        }
-    }
     
     //Getters
     public String getPrompt(){return prompt;}
@@ -291,6 +273,7 @@ public class TypeSomethingInstantDeath {
     public String getCorrectLetters() {return correctLetters.toString();}
     public String getIncorrectLetters() {return incorrectLetters.toString();}
     public String getCurrentLetterToDisplay() {return currentLetterToDisplay.toString();}
+    public char getCurrentLetter(){ return letterList.get(currentLetter).getLetter();}
     public char getWrongLetter(){return wrongLetter;}
     public char getActualLetter(){return actualLetter;}
     
