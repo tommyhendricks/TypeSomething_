@@ -5,23 +5,12 @@
  */
 package UI;
 
-import com.google.gson.Gson;
-import java.awt.event.WindowAdapter;
+
 import java.awt.event.WindowFocusListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import main.PlayerData;
 
 /**
@@ -68,6 +57,8 @@ public class PlayerProfileWin extends javax.swing.JFrame {
         idFastestWPM.setText(String.valueOf(pd.getIdAllFastestWPM()));
 
         usernameLabel.setText(pd.getUsername());
+        
+        mw.updateUserName(pd.getUsername());
     }
     
     /**
@@ -705,7 +696,7 @@ public class PlayerProfileWin extends javax.swing.JFrame {
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             File f = chooser.getSelectedFile();
             try {
-               pd = pd.loadPlayerData(f);
+               pd.loadPlayerData(f);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Could not load from file \n" + 

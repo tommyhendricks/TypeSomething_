@@ -104,7 +104,7 @@ public class TypeSomethingVinillaRaceWin extends javax.swing.JFrame implements A
             doc.insertString(doc.getLength(), raceData.getNormalLetters(), style);
         }
         catch(Exception e){
-            
+            System.err.println(e);
         }
     }
     

@@ -61,7 +61,7 @@ public class PromptGetter {
     
     public static String getPrompt(){
         getPromptFromAPI();
-        //return "This is the test quote. The other api stopped working so now I have to use this";
+        //return "123456789";
         return stringToReturn;
     }
     

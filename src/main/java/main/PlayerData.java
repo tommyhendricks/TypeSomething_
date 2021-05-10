@@ -32,7 +32,7 @@ public class PlayerData {
     private int allTimeAvgError;
     private int allTimeAvgErrorNum;
     
-    private ArrayList<Integer> allpastRaceList;
+    private ArrayList<Integer>allpastRaceList;
     
     
     //Vinilla race data
@@ -89,16 +89,40 @@ public class PlayerData {
         
     }
     
-    public PlayerData loadPlayerData(File f) throws IOException{
+    public void loadPlayerData(File f) throws IOException{
         Gson gson = new Gson();
         FileReader fr = new FileReader(f);
         PlayerData temp = new PlayerData();
+        
         temp = gson.fromJson(fr , PlayerData.class);
         
-        fr.close();
+        instance.setUsername(temp.getUsername());
         
-        return temp;
+        instance.setAllTimePrompts(temp.getAllTimePrompts());
+        instance.setAllTimeTopWpm(temp.getAllTimeTopWpm());
+        instance.setAllTimeAvgWpm(temp.getAllTimeAvgWpm());
+        instance.setAllTimeAvgWpmNum(temp.getAllTimeAvgWpmNum());
+        instance.setAllTimeAvgError(temp.getAllTimeAvgError());
+        instance.setAllTimeAvgErrorNum(temp.getAllTimeAvgErrorNum());
+        instance.setAllpastRaceList(temp.getAllpastRaceList());
         
+        instance.setVrAllFastestWPM(temp.getVrAllFastestWPM());
+        instance.setVrAllTimePrompts(temp.getVrAllTimePrompts());
+        instance.setVrAvgWpm(temp.getVrAvgWpm());
+        instance.setVrAvgWpmNum(temp.getVrAvgWpmNum());
+        instance.setVrAvgErrors(temp.getVrAvgErrors());
+        instance.setVrAvgErrorsNum(temp.getVrAvgErrorsNum());
+        instance.setVrPastRaceListWPM(temp.getVrPastRaceListWPM());
+        instance.setVrPastRaceListErrors(temp.getVrPastRaceListErrors());
+        
+        instance.setIdAllFastestWPM(temp.getIdAllFastestWPM());
+        instance.setIdAllTimePrompts(temp.getIdAllTimePrompts());
+        instance.setIdAvgWpm(temp.getIdAvgWpm());
+        instance.setIdAvgWpmNum(temp.getIdAvgWpmNum());
+        instance.setIdAvgErrors(temp.getIdAvgErrors());
+        instance.setIdAvgErrorsNum(temp.getIdAvgErrorsNum());
+        instance.setIdPastRaceListWPM(temp.getIdPastRaceListWPM());
+        instance.setIdPastRaceListErrors(temp.getIdPastRaceListErrors());
     }
     
     /**
@@ -215,6 +239,10 @@ public class PlayerData {
     public int getAllTimeTopWpm() {return allTimeTopWpm;}
     public int getAllTimeAvgWpm() {return allTimeAvgWpm;}
     public int getAllTimeAvgError() {return allTimeAvgError;}
+    public int getAllTimeAvgWpmNum() {return allTimeAvgWpmNum;}
+    public int getAllTimeAvgErrorNum() {return allTimeAvgErrorNum;}
+    public ArrayList<Integer> getAllpastRaceList() {return allpastRaceList;}
+   
     //__________________________________________________________________________
 
     //Getters for Vanilla Race stuff
@@ -222,6 +250,11 @@ public class PlayerData {
     public int getVrAllTimePrompts() {return vrAllTimePrompts;}
     public int getVrAvgWpm() {return vrAvgWpm;}
     public int getVrAvgErrors() {return vrAvgErrors;}
+    public int getVrAvgWpmNum() {return vrAvgWpmNum;}
+    public int getVrAvgErrorsNum() {return vrAvgErrorsNum;}
+    public ArrayList<Integer> getVrPastRaceListWPM() {return vrPastRaceListWPM;}
+    public ArrayList<Integer> getVrPastRaceListErrors() {return vrPastRaceListErrors;}
+   
    //___________________________________________________________________________
 
     //Getters for Instant Death Race stuff
@@ -229,11 +262,41 @@ public class PlayerData {
     public int getIdAllTimePrompts() {return idAllTimePrompts;}
     public int getIdAvgWpm() {return idAvgWpm;}
     public int getIdAvgErrors() {return idAvgErrors;}
+    public int getIdAvgWpmNum() {return idAvgWpmNum;}
+    public int getIdAvgErrorsNum() {return idAvgErrorsNum;}
+    public ArrayList<Integer> getIdPastRaceListWPM() {return idPastRaceListWPM;}
+    public ArrayList<Integer> getIdPastRaceListErrors() {return idPastRaceListErrors;}
+   
     //__________________________________________________________________________
     public String getUsername(){return userName;}
     
     //Setters for Everything
     public void setUsername(String username){this.userName = username;}
     public void setAllTimePrompts(int allTimePrompts) {this.allTimePrompts = allTimePrompts;}
+
+    public void setAllTimeTopWpm(int allTimeTopWpm) {this.allTimeTopWpm = allTimeTopWpm;}
+    public void setAllTimeAvgWpm(int allTimeAvgWpm) {this.allTimeAvgWpm = allTimeAvgWpm;}
+    public void setAllTimeAvgWpmNum(int allTimeAvgWpmNum) {this.allTimeAvgWpmNum = allTimeAvgWpmNum;}
+    public void setAllTimeAvgError(int allTimeAvgError) {this.allTimeAvgError = allTimeAvgError;}
+    public void setAllTimeAvgErrorNum(int allTimeAvgErrorNum) {this.allTimeAvgErrorNum = allTimeAvgErrorNum;}
+    public void setAllpastRaceList(ArrayList<Integer> allpastRaceList) {this.allpastRaceList = allpastRaceList;}
     
+    public void setVrAllFastestWPM(int vrAllFastestWPM) {this.vrAllFastestWPM = vrAllFastestWPM;}
+    public void setVrAllTimePrompts(int vrAllTimePrompts) {this.vrAllTimePrompts = vrAllTimePrompts;}
+    public void setVrAvgWpm(int vrAvgWpm) {this.vrAvgWpm = vrAvgWpm;}
+    public void setVrAvgWpmNum(int vrAvgWpmNum) {this.vrAvgWpmNum = vrAvgWpmNum;}
+    public void setVrAvgErrors(int vrAvgErrors) {this.vrAvgErrors = vrAvgErrors;}
+    public void setVrAvgErrorsNum(int vrAvgErrorsNum) {this.vrAvgErrorsNum = vrAvgErrorsNum;}
+    public void setVrPastRaceListWPM(ArrayList<Integer> vrPastRaceListWPM) {this.vrPastRaceListWPM = vrPastRaceListWPM;}
+    public void setVrPastRaceListErrors(ArrayList<Integer> vrPastRaceListErrors) {this.vrPastRaceListErrors = vrPastRaceListErrors;}
+    
+    public void setIdAllFastestWPM(int idAllFastestWPM) {this.idAllFastestWPM = idAllFastestWPM;}
+    public void setIdAvgWpm(int idAvgWpm) {this.idAvgWpm = idAvgWpm;}
+    public void setIdAvgWpmNum(int idAvgWpmNum) {this.idAvgWpmNum = idAvgWpmNum;}
+    public void setIdAvgErrors(int idAvgErrors) {this.idAvgErrors = idAvgErrors;}
+    public void setIdAvgErrorsNum(int idAvgErrorsNum) {this.idAvgErrorsNum = idAvgErrorsNum;}
+    public void setIdPastRaceListWPM(ArrayList<Integer> idPastRaceListWPM) {this.idPastRaceListWPM = idPastRaceListWPM;}
+    public void setIdPastRaceListErrors(ArrayList<Integer> idPastRaceListErrors) {this.idPastRaceListErrors = idPastRaceListErrors;}
+    public void setIdAllTimePrompts(int idAllTimePrompts) {this.idAllTimePrompts = idAllTimePrompts;}
+   
 }

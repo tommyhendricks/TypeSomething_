@@ -5,12 +5,8 @@
  */
 package main;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.Timer;
 
 /**
  * This will handle all of the data related to the Vanilla race that is going on
@@ -137,9 +133,11 @@ public class TypeSomethingVinillaRace{
         //This will check to see if there are more than 6 errors
         //If there are then it wont take anymore input
         if(currentWrong <=5){
-            currentLetterToDisplay.delete(0, currentLetterToDisplay.length());
-            if(currentLetter+1 < letterList.size())
+            //Checks for out of bounds error
+            if(currentLetter+1 < letterList.size()){
+                currentLetterToDisplay.delete(0, currentLetterToDisplay.length());
                 currentLetterToDisplay.append(letterList.get(currentLetter+1).getLetter());
+            }
             //If correct input
             if(letterList.get(currentLetter).getLetter() == c && !(isWrong)){
                 if(c != ' '){
@@ -158,7 +156,7 @@ public class TypeSomethingVinillaRace{
                 isWrong = false;
             }
             //If incorrect input
-            else if(letterList.get(currentLetter).getLetter() != c || isWrong){
+            else if(letterList.get(currentLetter).getLetter() != c || isWrong ){
                 incorrectLetters.append(letterList.get(currentLetter).getLetter());
                 //normalLetters.deleteCharAt(0);
                 currentLetter++;
@@ -169,17 +167,18 @@ public class TypeSomethingVinillaRace{
                }
             }
             //If prompt if finished
-            if(currentLetter == this.tempPrompt.length() && !isWrong){
+            if(currentLetter == tempPrompt.length() && !isWrong){
                 this.promptFinished = true;
                 if (currentLetter % 5 >3) {
                     updateTypingSpeed();
                 }
                 raceFinished();
+                currentLetterToDisplay.delete(0, currentLetterToDisplay.length());
            }
-            if(currentLetter == 1)
-                normalLetters.deleteCharAt(0);
+            
             if(normalLetters.length()>0)
                 normalLetters.deleteCharAt(0);
+
         }
         
      }
@@ -190,20 +189,65 @@ public class TypeSomethingVinillaRace{
       */
      public void backSpace(){
         if(isWrong){
-            normalLetters.insert(0, letterList.get(currentLetter).getLetter());
-            incorrectLetters.deleteCharAt(incorrectLetters.length()-1);
             currentLetterToDisplay.delete(0, currentLetterToDisplay.length());
-            if(currentLetter+1 < letterList.size())
+            if(currentLetter == letterList.size()){
                 currentLetterToDisplay.append(letterList.get(currentLetter-1).getLetter());
-            if(incorrectLetters.length() == 0){
-                isWrong = false;
+                incorrectLetters.deleteCharAt(incorrectLetters.length()-1);
             }
+            else if(currentLetter == letterList.size()-1){
+                currentLetterToDisplay.append(letterList.get(currentLetter-1).getLetter());
+                incorrectLetters.deleteCharAt(incorrectLetters.length()-1);
+                normalLetters.append(letterList.get(letterList.size()-1).getLetter());
+            } 
+            else{
+                normalLetters.insert(0, letterList.get(currentLetter).getLetter());
+                incorrectLetters.deleteCharAt(incorrectLetters.length()-1);
+
+                if(currentLetter+1 < letterList.size())
+                    currentLetterToDisplay.append(letterList.get(currentLetter-1).getLetter());
+                
+            }
+            if(incorrectLetters.length() == 0){
+                    isWrong = false;
+                }
             currentLetter--;
             currentWrong--;
         }
+
+//        if(isWrong){
+//            
+//            normalLetters.insert(0, letterList.get(currentLetter).getLetter());
+//            incorrectLetters.deleteCharAt(incorrectLetters.length()-1);
+//            currentLetterToDisplay.delete(0, currentLetterToDisplay.length());
+//            
+//            if(currentLetter+1 < letterList.size())
+//                currentLetterToDisplay.append(letterList.get(currentLetter-1).getLetter());
+//            if(incorrectLetters.length() == 0){
+//                isWrong = false;
+//            }
+//            currentLetter--;
+//            currentWrong--;
+//        }
      }
      
-    
+    public void refreshLists(){
+            correctLetters.delete(0, correctLetters.length());
+            incorrectLetters.delete(0, incorrectLetters.length());
+            normalLetters.delete(0, normalLetters.length());
+
+            for(Letter l: letterList){
+                if(l.getCorrect() == true)
+                    correctLetters.append(l.getLetter());
+                else if (l.getCorrect() == false && l.getTyped())
+                    incorrectLetters.append(l.getLetter());
+                else if (l.getTyped() == false)
+                    normalLetters.append(l.getLetter());
+            }
+            //if(normalLetters.length() >0)
+            if(normalLetters.length() > 0)
+                normalLetters.deleteCharAt(0);
+    }
+     
     /**
      * This will start the timer that is used to find the wpm
      */
@@ -300,6 +344,8 @@ public class TypeSomethingVinillaRace{
     
     public void setNormalLetters(String prompt) {
         this.normalLetters = new StringBuilder(prompt);
+        this.normalLetters.deleteCharAt(0);
+        currentLetterToDisplay.append(letterList.get(currentLetter).getLetter());
     }
     
 }
